@@ -1,5 +1,27 @@
 const API_BASE_URL = "http://localhost:8000/api/v1";
 
+function getAuthHeader(token) {
+  return { Authorization: `Bearer ${token}` };
+}
+
+export async function register(email, password) {
+  const formData = new URLSearchParams();
+  formData.append("username", email);
+  formData.append("password", password);
+
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Registration failed");
+  }
+
+  return response.json();
+}
+
 export async function login(email, password) {
   const formData = new URLSearchParams();
   formData.append("username", email);
@@ -19,18 +41,113 @@ export async function login(email, password) {
 
 export async function getTasks(token) {
   const response = await fetch(`${API_BASE_URL}/tasks`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: getAuthHeader(token),
   });
 
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
   }
 
-  const data = await response.json();
+  return response.json();
+}
 
-  console.log("Tasks response:", data);
+export async function createTask(token, title, description) {
+  const response = await fetch(`${API_BASE_URL}/tasks`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, description }),
+  });
 
-  return data;
+  if (!response.ok) {
+    throw new Error("Failed to create task");
+  }
+
+  return response.json();
+}
+
+export async function updateTask(token, taskId, title, description) {
+  const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+    method: "PUT",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, description }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update task");
+  }
+
+  return response.json();
+}
+
+export async function deleteTask(token, taskId) {
+  const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+    method: "DELETE",
+    headers: getAuthHeader(token),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete task");
+  }
+}
+
+export async function getSessions(token) {
+  const response = await fetch(`${API_BASE_URL}/sessions`, {
+    headers: getAuthHeader(token),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch sessions");
+  }
+
+  return response.json();
+}
+
+export async function startSession(token, taskId) {
+  const response = await fetch(`${API_BASE_URL}/sessions/start/${taskId}`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to start session");
+  }
+
+  return response.json();
+}
+
+export async function endSession(token, sessionId, notes) {
+  const response = await fetch(`${API_BASE_URL}/sessions/end/${sessionId}`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ notes }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to end session");
+  }
+
+  return response.json();
+}
+
+export async function deleteSession(token, sessionId) {
+  const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}`, {
+    method: "DELETE",
+    headers: getAuthHeader(token),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete session");
+  }
 }
