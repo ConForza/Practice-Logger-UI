@@ -5,10 +5,6 @@ function getAuthHeader(token) {
 }
 
 export async function register(email, password) {
-  const formData = new URLSearchParams();
-  formData.append("username", email);
-  formData.append("password", password);
-
   const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

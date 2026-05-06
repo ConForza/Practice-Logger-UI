@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { login, getTasks } from "./services/api";
+import { login, getTasks, createTask } from "./services/api";
 
 import "./App.css";
-("./services/api");
 import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -11,6 +11,8 @@ function App() {
 
   const [token, setToken] = useState(null);
   const [tasks, setTasks] = useState([]);
+
+  const [isCreatingTask, setIsCreatingTask] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,6 +29,25 @@ function App() {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleCreateTask(taskData) {
+    setIsCreatingTask(true);
+    setError("");
+
+    try {
+      const newTask = await createTask(
+        token,
+        taskData.title,
+        taskData.description,
+      );
+      setTasks((prev) => [...prev, newTask]);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setIsCreatingTask(false);
     }
   }
 
@@ -81,9 +102,13 @@ function App() {
           </button>
         </form>
       ) : (
-        <>
+        <div className="tasks-section">
+          <TaskForm
+            onCreateTask={handleCreateTask}
+            isSubmitting={isCreatingTask}
+          />
           <TaskList tasks={tasks} />
-        </>
+        </div>
       )}
     </main>
   );
