@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { login, getTasks, createTask } from "./services/api";
+import { login, getTasks, createTask, deleteTask } from "./services/api";
 
 import "./App.css";
 import TaskList from "./components/TaskList";
@@ -11,6 +11,7 @@ function App() {
 
   const [token, setToken] = useState(null);
   const [tasks, setTasks] = useState([]);
+  const [deletingTaskId, setDeletingTaskId] = useState(null);
 
   const [isCreatingTask, setIsCreatingTask] = useState(false);
 
@@ -48,6 +49,20 @@ function App() {
       throw err;
     } finally {
       setIsCreatingTask(false);
+    }
+  }
+
+  async function handleDeleteTask(taskId) {
+    setDeletingTaskId(taskId);
+    setError("");
+
+    try {
+      await deleteTask(token, taskId);
+      setTasks((prev) => prev.filter((task) => task.id !== taskId));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeletingTaskId(null);
     }
   }
 
@@ -107,7 +122,11 @@ function App() {
             onCreateTask={handleCreateTask}
             isSubmitting={isCreatingTask}
           />
-          <TaskList tasks={tasks} />
+          <TaskList
+            tasks={tasks}
+            onDeleteTask={handleDeleteTask}
+            deletingTaskId={deletingTaskId}
+          />
         </div>
       )}
     </main>

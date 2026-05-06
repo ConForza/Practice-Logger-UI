@@ -90,6 +90,12 @@ export async function deleteTask(token, taskId) {
   if (!response.ok) {
     throw new Error("Failed to delete task");
   }
+
+  if (response.status === 204) {
+    return null;
+  }
+
+  return response.json();
 }
 
 export async function getSessions(token) {
