@@ -1,4 +1,11 @@
-export default function TaskList({ tasks, onDeleteTask, deletingTaskId }) {
+export default function TaskList({
+  tasks,
+  onDeleteTask,
+  onStartSession,
+  deletingTaskId,
+  startingTaskId,
+  activeSession,
+}) {
   if (!tasks || tasks.length === 0) {
     return <p>No tasks found.</p>;
   }
@@ -14,6 +21,12 @@ export default function TaskList({ tasks, onDeleteTask, deletingTaskId }) {
             disabled={deletingTaskId === task.id}
           >
             {deletingTaskId === task.id ? "Deleting..." : "Delete"}
+          </button>
+          <button
+            onClick={() => onStartSession(task.id)}
+            disabled={startingTaskId === task.id || Boolean(activeSession)}
+          >
+            {startingTaskId === task.id ? "Starting..." : "Start Session"}
           </button>
         </li>
       ))}

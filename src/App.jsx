@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { login, getTasks, createTask, deleteTask } from "./services/api";
+import {
+  login,
+  getTasks,
+  createTask,
+  deleteTask,
+  startSession,
+} from "./services/api";
 
 import "./App.css";
 import TaskList from "./components/TaskList";
@@ -12,8 +18,10 @@ function App() {
   const [token, setToken] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [deletingTaskId, setDeletingTaskId] = useState(null);
-
   const [isCreatingTask, setIsCreatingTask] = useState(false);
+
+  const [activeSession, setActiveSession] = useState(null);
+  const [startingTaskId, setStartingTaskId] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -63,6 +71,20 @@ function App() {
       setError(err.message);
     } finally {
       setDeletingTaskId(null);
+    }
+  }
+
+  async function handleStartSession(taskId) {
+    setStartingTaskId(taskId);
+    setError("");
+
+    try {
+      const session = await startSession(token, taskId);
+      setActiveSession(session);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setStartingTaskId(null);
     }
   }
 
@@ -122,10 +144,18 @@ function App() {
             onCreateTask={handleCreateTask}
             isSubmitting={isCreatingTask}
           />
+          {activeSession && (
+            <div className="active-session">
+              <p>Active session started for task ID: {activeSession.task_id}</p>
+            </div>
+          )}
           <TaskList
             tasks={tasks}
             onDeleteTask={handleDeleteTask}
             deletingTaskId={deletingTaskId}
+            onStartSession={handleStartSession}
+            startingTaskId={startingTaskId}
+            activeSession={activeSession}
           />
         </div>
       )}
