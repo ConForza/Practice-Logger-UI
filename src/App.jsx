@@ -5,6 +5,7 @@ import {
   createTask,
   deleteTask,
   startSession,
+  endSession,
 } from "./services/api";
 
 import "./App.css";
@@ -22,6 +23,8 @@ function App() {
 
   const [activeSession, setActiveSession] = useState(null);
   const [startingTaskId, setStartingTaskId] = useState(null);
+  const [sessionNotes, setSessionNotes] = useState("");
+  const [isEndingSession, setIsEndingSession] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -88,6 +91,22 @@ function App() {
     }
   }
 
+  async function handleEndSession() {
+    if (!activeSession) return;
+
+    setIsEndingSession(true);
+    setError("");
+
+    try {
+      await endSession(token, activeSession.task_id, sessionNotes);
+      setActiveSession(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsEndingSession(false);
+    }
+  }
+
   useEffect(() => {
     if (!token) return;
 
@@ -145,9 +164,18 @@ function App() {
             isSubmitting={isCreatingTask}
           />
           {activeSession && (
-            <div className="active-session">
-              <p>Active session started for task ID: {activeSession.task_id}</p>
-            </div>
+            <section className="active-session">
+              <h2>Active Session</h2>
+              <p>Task ID: {activeSession.task_id}</p>
+              <textarea
+                placeholder="Session notes..."
+                value={sessionNotes}
+                onChange={(e) => setSessionNotes(e.target.value)}
+              />
+              <button onClick={handleEndSession} disabled={isEndingSession}>
+                {isEndingSession ? "Ending Session..." : "End Session"}
+              </button>
+            </section>
           )}
           <TaskList
             tasks={tasks}
@@ -156,6 +184,7 @@ function App() {
             onStartSession={handleStartSession}
             startingTaskId={startingTaskId}
             activeSession={activeSession}
+            onEndSession={handleEndSession}
           />
         </div>
       )}

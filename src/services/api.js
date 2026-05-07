@@ -4,6 +4,19 @@ function getAuthHeader(token) {
   return { Authorization: `Bearer ${token}` };
 }
 
+async function handleApiError(response, defaultMessage) {
+  let errorMessage = defaultMessage;
+
+  try {
+    const errorData = await response.json();
+    if (errorData.detail) {
+      errorMessage = errorData.detail;
+    }
+  } catch {}
+
+  throw new Error(errorMessage);
+}
+
 export async function register(email, password) {
   const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
@@ -12,7 +25,7 @@ export async function register(email, password) {
   });
 
   if (!response.ok) {
-    throw new Error("Registration failed");
+    await handleApiError(response, "Registration failed");
   }
 
   return response.json();
@@ -29,7 +42,7 @@ export async function login(email, password) {
   });
 
   if (!response.ok) {
-    throw new Error("Login failed");
+    await handleApiError(response, "Login failed");
   }
 
   return response.json();
@@ -41,7 +54,7 @@ export async function getTasks(token) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch tasks");
+    await handleApiError(response, "Failed to fetch tasks");
   }
 
   return response.json();
@@ -58,7 +71,7 @@ export async function createTask(token, title, description) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create task");
+    await handleApiError(response, "Failed to create task");
   }
 
   return response.json();
@@ -75,7 +88,7 @@ export async function updateTask(token, taskId, title, description) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update task");
+    await handleApiError(response, "Failed to update task");
   }
 
   return response.json();
@@ -88,7 +101,7 @@ export async function deleteTask(token, taskId) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete task");
+    await handleApiError(response, "Failed to delete task");
   }
 
   if (response.status === 204) {
@@ -104,7 +117,7 @@ export async function getSessions(token) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch sessions");
+    await handleApiError(response, "Failed to fetch sessions");
   }
 
   return response.json();
@@ -120,14 +133,14 @@ export async function startSession(token, taskId) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to start session");
+    await handleApiError(response, "Failed to start session");
   }
 
   return response.json();
 }
 
-export async function endSession(token, sessionId, notes) {
-  const response = await fetch(`${API_BASE_URL}/sessions/end/${sessionId}`, {
+export async function endSession(token, taskId, notes) {
+  const response = await fetch(`${API_BASE_URL}/sessions/end/${taskId}`, {
     method: "POST",
     headers: {
       ...getAuthHeader(token),
@@ -137,7 +150,7 @@ export async function endSession(token, sessionId, notes) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to end session");
+    await handleApiError(response, "Failed to end session");
   }
 
   return response.json();
@@ -150,6 +163,6 @@ export async function deleteSession(token, sessionId) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete session");
+    await handleApiError(response, "Failed to delete session");
   }
 }
