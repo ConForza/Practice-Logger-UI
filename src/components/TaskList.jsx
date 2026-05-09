@@ -12,7 +12,7 @@ export default function TaskList({
 
   return (
     <ul>
-      {tasks.map((task) => (
+      {tasks.toReversed().map((task) => (
         <li key={task.id}>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
@@ -24,7 +24,11 @@ export default function TaskList({
           </button>
           <button
             onClick={() => onStartSession(task.id)}
-            disabled={startingTaskId === task.id || Boolean(activeSession)}
+            disabled={
+              startingTaskId === task.id ||
+              Boolean(activeSession) ||
+              task.status === "completed"
+            }
           >
             {startingTaskId === task.id ? "Starting..." : "Start Session"}
           </button>

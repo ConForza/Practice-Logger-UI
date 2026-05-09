@@ -6,11 +6,13 @@ import {
   deleteTask,
   startSession,
   endSession,
+  getSessions,
 } from "./services/api";
 
 import "./App.css";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import SessionList from "./components/SessionList";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -25,6 +27,8 @@ function App() {
   const [startingTaskId, setStartingTaskId] = useState(null);
   const [sessionNotes, setSessionNotes] = useState("");
   const [isEndingSession, setIsEndingSession] = useState(false);
+  const [sessions, setSessions] = useState([]);
+  const [isLoadingSessions, setIsLoadingSessions] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -99,7 +103,15 @@ function App() {
 
     try {
       await endSession(token, activeSession.task_id, sessionNotes);
+
+      const updatedTasks = await getTasks(token);
+      const updatedSessions = await getSessions(token);
+
+      setTasks(updatedTasks);
+      setSessions(updatedSessions);
+
       setActiveSession(null);
+      setSessionNotes("");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -107,17 +119,33 @@ function App() {
     }
   }
 
+  async function fetchSessions() {
+    setIsLoadingSessions(true);
+    setError("");
+
+    try {
+      const sessionsData = await getSessions(token);
+      setSessions(sessionsData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoadingSessions(false);
+    }
+  }
+
   useEffect(() => {
     if (!token) return;
 
-    async function fetchTasks() {
+    async function fetchInitialData() {
       try {
         setError("");
         setLoading(true);
 
-        const data = await getTasks(token);
+        const tasksData = await getTasks(token);
+        setTasks(tasksData);
 
-        setTasks(data);
+        const sessionsData = await getSessions(token);
+        setSessions(sessionsData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -125,7 +153,7 @@ function App() {
       }
     }
 
-    fetchTasks();
+    fetchInitialData();
   }, [token]);
 
   return (
@@ -186,6 +214,7 @@ function App() {
             activeSession={activeSession}
             onEndSession={handleEndSession}
           />
+          <SessionList sessions={sessions} />
         </div>
       )}
     </main>
