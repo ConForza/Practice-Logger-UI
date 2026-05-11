@@ -123,6 +123,18 @@ export async function getSessions(token) {
   return response.json();
 }
 
+export async function getActiveSession(token) {
+  const response = await fetch(`${API_BASE_URL}/sessions/active`, {
+    headers: getAuthHeader(token),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to fetch active session");
+  }
+
+  return response.json();
+}
+
 export async function startSession(token, taskId) {
   const response = await fetch(`${API_BASE_URL}/sessions/start/${taskId}`, {
     method: "POST",

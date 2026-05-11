@@ -7,6 +7,7 @@ import {
   startSession,
   endSession,
   getSessions,
+  getActiveSession,
 } from "./services/api";
 
 import "./App.css";
@@ -146,6 +147,9 @@ function App() {
 
         const sessionsData = await getSessions(token);
         setSessions(sessionsData);
+
+        const activeSessionData = await getActiveSession(token);
+        setActiveSession(activeSessionData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -194,6 +198,7 @@ function App() {
           {activeSession && (
             <section className="active-session">
               <h2>Active Session</h2>
+              <p>Task ID: {activeSession.title}</p>
               <p>Task ID: {activeSession.task_id}</p>
               <textarea
                 placeholder="Session notes..."
