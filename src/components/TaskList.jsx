@@ -16,6 +16,7 @@ export default function TaskList({
         <li key={task.id}>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
+          <p>Status: {task.status}</p>
           <button
             onClick={() => onDeleteTask(task.id)}
             disabled={deletingTaskId === task.id}

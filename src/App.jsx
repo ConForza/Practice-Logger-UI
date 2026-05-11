@@ -210,6 +210,18 @@ function App() {
               </button>
             </section>
           )}
+          <button
+            type="button"
+            onClick={() => {
+              setToken(null);
+              setSessions([]);
+              setActiveSession(null);
+              setTasks([]);
+              setSessionNotes("");
+            }}
+          >
+            Logout
+          </button>
           <TaskList
             tasks={tasks}
             onDeleteTask={handleDeleteTask}
