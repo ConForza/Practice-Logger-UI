@@ -1,5 +1,5 @@
 import TaskSection from "./TaskSection";
-import SessionList from "./SessionList";
+import SessionHistorySection from "./SessionHistorySection";
 import ActiveSessionPanel from "./ActiveSessionPanel";
 
 export default function StudentDashboard({
@@ -38,7 +38,7 @@ export default function StudentDashboard({
         onStartSession={onStartSession}
       />
 
-      <SessionList sessions={sessions} />
+      <SessionHistorySection sessions={sessions} />
     </div>
   );
 }
