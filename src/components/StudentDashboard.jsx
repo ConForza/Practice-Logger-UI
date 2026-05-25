@@ -1,5 +1,4 @@
-import TaskForm from "./TaskForm";
-import TaskList from "./TaskList";
+import TaskSection from "./TaskSection";
 import SessionList from "./SessionList";
 import ActiveSessionPanel from "./ActiveSessionPanel";
 
@@ -20,8 +19,6 @@ export default function StudentDashboard({
 }) {
   return (
     <div className="tasks-section">
-      <TaskForm onCreateTask={onCreateTask} isSubmitting={isCreatingTask} />
-
       <ActiveSessionPanel
         activeSession={activeSession}
         sessionNotes={sessionNotes}
@@ -30,13 +27,15 @@ export default function StudentDashboard({
         onEndSession={onEndSession}
       />
 
-      <TaskList
+      <TaskSection
         tasks={tasks}
-        onDeleteTask={onDeleteTask}
-        deletingTaskId={deletingTaskId}
-        onStartSession={onStartSession}
-        startingTaskId={startingTaskId}
         activeSession={activeSession}
+        deletingTaskId={deletingTaskId}
+        startingTaskId={startingTaskId}
+        isCreatingTask={isCreatingTask}
+        onCreateTask={onCreateTask}
+        onDeleteTask={onDeleteTask}
+        onStartSession={onStartSession}
       />
 
       <SessionList sessions={sessions} />
