@@ -19,7 +19,7 @@ export default function TaskList({
           <p>Status: {task.status}</p>
           <button
             onClick={() => onDeleteTask(task.id)}
-            disabled={deletingTaskId === task.id}
+            disabled={deletingTaskId === task.id || Boolean(activeSession)}
           >
             {deletingTaskId === task.id ? "Deleting..." : "Delete"}
           </button>

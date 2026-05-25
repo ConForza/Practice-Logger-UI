@@ -11,10 +11,8 @@ import {
 } from "./services/api";
 
 import "./App.css";
-import TaskList from "./components/TaskList";
-import TaskForm from "./components/TaskForm";
-import SessionList from "./components/SessionList";
 import LoginForm from "./components/LoginForm";
+import StudentDashboard from "./components/StudentDashboard";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -176,49 +174,21 @@ function App() {
           onLogin={handleLogin}
         />
       ) : (
-        <div className="tasks-section">
-          <TaskForm
-            onCreateTask={handleCreateTask}
-            isSubmitting={isCreatingTask}
-          />
-          {activeSession && (
-            <section className="active-session">
-              <h2>Active Session</h2>
-              <p>Task ID: {activeSession.title}</p>
-              <p>Task ID: {activeSession.task_id}</p>
-              <textarea
-                placeholder="Session notes..."
-                value={sessionNotes}
-                onChange={(e) => setSessionNotes(e.target.value)}
-              />
-              <button onClick={handleEndSession} disabled={isEndingSession}>
-                {isEndingSession ? "Ending Session..." : "End Session"}
-              </button>
-            </section>
-          )}
-          <button
-            type="button"
-            onClick={() => {
-              setToken(null);
-              setSessions([]);
-              setActiveSession(null);
-              setTasks([]);
-              setSessionNotes("");
-            }}
-          >
-            Logout
-          </button>
-          <TaskList
-            tasks={tasks}
-            onDeleteTask={handleDeleteTask}
-            deletingTaskId={deletingTaskId}
-            onStartSession={handleStartSession}
-            startingTaskId={startingTaskId}
-            activeSession={activeSession}
-            onEndSession={handleEndSession}
-          />
-          <SessionList sessions={sessions} />
-        </div>
+        <StudentDashboard
+          activeSession={activeSession}
+          sessionNotes={sessionNotes}
+          isEndingSession={isEndingSession}
+          tasks={tasks}
+          sessions={sessions}
+          deletingTaskId={deletingTaskId}
+          startingTaskId={startingTaskId}
+          isCreatingTask={isCreatingTask}
+          onCreateTask={handleCreateTask}
+          onEndSession={handleEndSession}
+          onSessionNotesChange={(e) => setSessionNotes(e.target.value)}
+          onDeleteTask={handleDeleteTask}
+          onStartSession={handleStartSession}
+        />
       )}
     </main>
   );
