@@ -1,6 +1,7 @@
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import SessionList from "./SessionList";
+import ActiveSessionPanel from "./ActiveSessionPanel";
 
 export default function StudentDashboard({
   activeSession,
@@ -21,23 +22,13 @@ export default function StudentDashboard({
     <div className="tasks-section">
       <TaskForm onCreateTask={onCreateTask} isSubmitting={isCreatingTask} />
 
-      {activeSession && (
-        <section className="active-session">
-          <h2>Active Session</h2>
-          <p>Task: {activeSession.title}</p>
-          <p>Task ID: {activeSession.task_id}</p>
-
-          <textarea
-            placeholder="Session notes..."
-            value={sessionNotes}
-            onChange={onSessionNotesChange}
-          />
-
-          <button onClick={onEndSession} disabled={isEndingSession}>
-            {isEndingSession ? "Ending Session..." : "End Session"}
-          </button>
-        </section>
-      )}
+      <ActiveSessionPanel
+        activeSession={activeSession}
+        sessionNotes={sessionNotes}
+        isEndingSession={isEndingSession}
+        onSessionNotesChange={onSessionNotesChange}
+        onEndSession={onEndSession}
+      />
 
       <TaskList
         tasks={tasks}
