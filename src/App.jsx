@@ -14,6 +14,7 @@ import "./App.css";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import SessionList from "./components/SessionList";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -166,29 +167,14 @@ function App() {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!token ? (
-        <form onSubmit={handleLogin}>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+        <LoginForm
+          email={email}
+          password={password}
+          loading={loading}
+          onEmailChange={(e) => setEmail(e.target.value)}
+          onPasswordChange={(e) => setPassword(e.target.value)}
+          onLogin={handleLogin}
+        />
       ) : (
         <div className="tasks-section">
           <TaskForm
