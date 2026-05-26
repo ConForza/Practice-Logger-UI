@@ -50,6 +50,25 @@ function App() {
     }
   }
 
+  async function clearAuthState() {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    setToken(null);
+    setEmail("");
+    setPassword("");
+    setTasks([]);
+    setSessions([]);
+    setActiveSession(null);
+    setSessionNotes("");
+  }
+
+  async function isAuthError(message) {
+    return (
+      message === "Could not validate credentials" ||
+      message === "Not authenticated" ||
+      message === "Invalid token"
+    );
+  }
+
   async function handleCreateTask(taskData) {
     setIsCreatingTask(true);
     setError("");
@@ -135,6 +154,11 @@ function App() {
     }
   }
 
+  async function handleLogout() {
+    clearAuthState();
+    setError("");
+  }
+
   useEffect(() => {
     const savedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
 
@@ -162,13 +186,8 @@ function App() {
       } catch (err) {
         setError(err.message);
 
-        if (err.message === "Could not validate credentials") {
-          localStorage.removeItem(TOKEN_STORAGE_KEY);
-          setToken(null);
-          setTasks([]);
-          setSessions([]);
-          setActiveSession(null);
-          setSessionNotes("");
+        if (isAuthError(err.message)) {
+          clearAuthState();
         }
       } finally {
         setLoading(false);
@@ -207,6 +226,7 @@ function App() {
           onSessionNotesChange={(e) => setSessionNotes(e.target.value)}
           onDeleteTask={handleDeleteTask}
           onStartSession={handleStartSession}
+          onLogout={handleLogout}
         />
       )}
     </main>

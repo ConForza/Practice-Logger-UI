@@ -16,9 +16,18 @@ export default function StudentDashboard({
   onSessionNotesChange,
   onDeleteTask,
   onStartSession,
+  onLogout,
 }) {
   return (
     <div className="tasks-section">
+      <div className="dashboard-header">
+        <h2>Student Dashboard</h2>
+
+        <button type="button" onClick={onLogout}>
+          Logout
+        </button>
+      </div>
+
       <ActiveSessionPanel
         activeSession={activeSession}
         sessionNotes={sessionNotes}
