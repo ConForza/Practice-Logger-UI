@@ -13,6 +13,7 @@ import {
 import "./App.css";
 import LoginForm from "./components/LoginForm";
 import StudentDashboard from "./components/StudentDashboard";
+const TOKEN_STORAGE_KEY = "practiceTrackerToken";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -41,6 +42,7 @@ function App() {
     try {
       const data = await login(email, password);
       setToken(data.access_token);
+      localStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
     } catch (err) {
       setError(err.message);
     } finally {
