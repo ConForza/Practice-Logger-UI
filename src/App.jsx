@@ -107,8 +107,8 @@ function App() {
     setError("");
 
     try {
-      const session = await startSession(token, taskId);
-      setActiveSession(session);
+      await startSession(token, taskId);
+      await fetchDashboardData(token);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -125,14 +125,8 @@ function App() {
     try {
       await endSession(token, activeSession.task_id, sessionNotes);
 
-      const updatedTasks = await getTasks(token);
-      const updatedSessions = await getSessions(token);
-
-      setTasks(updatedTasks);
-      setSessions(updatedSessions);
-
-      setActiveSession(null);
       setSessionNotes("");
+      await fetchDashboardData(token);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -159,6 +153,29 @@ function App() {
     setError("");
   }
 
+  async function fetchDashboardData(authToken) {
+    setError("");
+    setLoading(true);
+
+    try {
+      const tasksData = await getTasks(authToken);
+      const sessionsData = await getSessions(authToken);
+      const activeSessionData = await getActiveSession(authToken);
+
+      setTasks(tasksData);
+      setSessions(sessionsData);
+      setActiveSession(activeSessionData);
+    } catch (err) {
+      setError(err.message);
+
+      if (isAuthError(err.message)) {
+        clearAuthState();
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     const savedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
 
@@ -170,31 +187,7 @@ function App() {
   useEffect(() => {
     if (!token) return;
 
-    async function fetchInitialData() {
-      try {
-        setError("");
-        setLoading(true);
-
-        const tasksData = await getTasks(token);
-        setTasks(tasksData);
-
-        const sessionsData = await getSessions(token);
-        setSessions(sessionsData);
-
-        const activeSessionData = await getActiveSession(token);
-        setActiveSession(activeSessionData);
-      } catch (err) {
-        setError(err.message);
-
-        if (isAuthError(err.message)) {
-          clearAuthState();
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchInitialData();
+    fetchDashboardData(token);
   }, [token]);
 
   return (
