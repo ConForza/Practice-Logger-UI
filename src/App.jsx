@@ -136,6 +136,14 @@ function App() {
   }
 
   useEffect(() => {
+    const savedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+    if (savedToken) {
+      setToken(savedToken);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!token) return;
 
     async function fetchInitialData() {
@@ -153,6 +161,15 @@ function App() {
         setActiveSession(activeSessionData);
       } catch (err) {
         setError(err.message);
+
+        if (err.message === "Could not validate credentials") {
+          localStorage.removeItem(TOKEN_STORAGE_KEY);
+          setToken(null);
+          setTasks([]);
+          setSessions([]);
+          setActiveSession(null);
+          setSessionNotes("");
+        }
       } finally {
         setLoading(false);
       }
