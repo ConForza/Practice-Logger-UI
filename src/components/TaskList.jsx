@@ -20,6 +20,30 @@ function getStatusClass(status) {
   }
 }
 
+function getStartButtonText(task, startingTaskId, activeSession) {
+  if (startingTaskId === task.id) {
+    return "Starting...";
+  }
+
+  if (task.status === "completed") {
+    return "Completed";
+  }
+
+  if (activeSession) {
+    return "Session in progress";
+  }
+
+  return "Start Session";
+}
+
+function isStartButtonDisabled(task, startingTaskId, activeSession) {
+  return (
+    startingTaskId === task.id ||
+    Boolean(activeSession) ||
+    task.status === "completed"
+  );
+}
+
 export default function TaskList({
   tasks,
   onDeleteTask,
@@ -48,17 +72,21 @@ export default function TaskList({
             onClick={() => onDeleteTask(task.id)}
             disabled={deletingTaskId === task.id || Boolean(activeSession)}
           >
-            {deletingTaskId === task.id ? "Deleting..." : "Delete"}
+            {deletingTaskId === task.id
+              ? "Deleting..."
+              : activeSession
+                ? "Locked during session"
+                : "Delete"}
           </button>
           <button
             onClick={() => onStartSession(task.id)}
-            disabled={
-              startingTaskId === task.id ||
-              Boolean(activeSession) ||
-              task.status === "completed"
-            }
+            disabled={isStartButtonDisabled(
+              task,
+              startingTaskId,
+              activeSession,
+            )}
           >
-            {startingTaskId === task.id ? "Starting..." : "Start Session"}
+            {getStartButtonText(task, startingTaskId, activeSession)}
           </button>
         </li>
       ))}
