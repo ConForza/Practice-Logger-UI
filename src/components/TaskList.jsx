@@ -1,3 +1,25 @@
+function getStatusLabel(status) {
+  switch (status) {
+    case "in progress":
+      return "In progress";
+    case "completed":
+      return "Completed";
+    default:
+      return "Pending";
+  }
+}
+
+function getStatusClass(status) {
+  switch (status) {
+    case "in progress":
+      return "status-badge status-in-progress";
+    case "completed":
+      return "status-badge status-completed";
+    default:
+      return "status-badge status-pending";
+  }
+}
+
 export default function TaskList({
   tasks,
   onDeleteTask,
@@ -16,7 +38,12 @@ export default function TaskList({
         <li key={task.id}>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
-          <p>Status: {task.status}</p>
+          <p>
+            Status:{" "}
+            <span className={getStatusClass(task.status)}>
+              {getStatusLabel(task.status)}
+            </span>
+          </p>
           <button
             onClick={() => onDeleteTask(task.id)}
             disabled={deletingTaskId === task.id || Boolean(activeSession)}
