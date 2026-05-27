@@ -59,3 +59,47 @@
   background: #e8f7eb;
   color: #205b2b;
 }
+
+.active-session {
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid #f0d98c;
+  border-radius: 10px;
+  background: #fff8dc;
+}
+
+.active-session-task {
+  padding: 0.75rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.session-notes-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 1rem;
+}
+
+.session-notes-field textarea {
+  display: block;
+  width: 100%;
+  min-height: 120px;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.session-notes-field .helper-text {
+  display: block;
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.active-session-actions {
+  margin-top: 1rem;
+}
