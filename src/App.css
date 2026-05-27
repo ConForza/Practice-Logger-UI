@@ -252,3 +252,51 @@ button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+.auth-card {
+  max-width: 420px;
+  margin: 2rem auto;
+  padding: 1.25rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.auth-card h2 {
+  margin-top: 0;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.auth-card label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.auth-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.link-button {
+  margin-top: 1rem;
+  border: none;
+  background: none;
+  color: #005fcc;
+  padding: 0;
+  cursor: pointer;
+}
+
+.link-button:hover:not(:disabled) {
+  text-decoration: underline;
+  background: none;
+}

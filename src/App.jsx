@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   login,
+  register,
   getTasks,
   createTask,
   deleteTask,
@@ -23,7 +24,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [deletingTaskId, setDeletingTaskId] = useState(null);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
-
+  const [authMode, setAuthMode] = useState("login");
   const [activeSession, setActiveSession] = useState(null);
   const [startingTaskId, setStartingTaskId] = useState(null);
   const [sessionNotes, setSessionNotes] = useState("");
@@ -33,6 +34,24 @@ function App() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  async function handleRegister(e) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      await register(email, password);
+
+      const data = await login(email, password);
+      setToken(data.access_token);
+      localStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -197,12 +216,20 @@ function App() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!token ? (
         <LoginForm
+          authMode={authMode}
           email={email}
           password={password}
           loading={loading}
           onEmailChange={(e) => setEmail(e.target.value)}
           onPasswordChange={(e) => setPassword(e.target.value)}
           onLogin={handleLogin}
+          onRegister={handleRegister}
+          onToggleMode={() => {
+            setError("");
+            setAuthMode((prevMode) =>
+              prevMode === "login" ? "register" : "login",
+            );
+          }}
         />
       ) : (
         <StudentDashboard
