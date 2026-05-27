@@ -1,16 +1,68 @@
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
 .tasks-section {
+  padding: 0;
+}
+
+.dashboard-header {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+}
+
+.task-section {
+  margin-bottom: 1.5rem;
+}
+
+input,
+textarea {
+  font: inherit;
+}
+
+.task-section form {
+  margin-bottom: 1.5rem;
+}
+
+.task-section input,
+.task-section textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+.task-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .task-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px;
-  min-width: 300px;
-  max-width: 50%;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
 }
 
 .task-form input,
@@ -163,4 +215,40 @@
   border-radius: 8px;
   color: #555;
   background: #fafafa;
+}
+
+.task-list {
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.task-card {
+  list-style: none;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.task-card h3 {
+  margin-top: 0;
+}
+
+button {
+  padding: 0.55rem 0.85rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background: #f5f5f5;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: #e8e8e8;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }

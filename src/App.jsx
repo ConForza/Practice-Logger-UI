@@ -191,7 +191,7 @@ function App() {
   }, [token]);
 
   return (
-    <main>
+    <main className="app-container">
       <h1>Practice Tracker</h1>
 
       {error && <p style={{ color: "red" }}>{error}</p>}

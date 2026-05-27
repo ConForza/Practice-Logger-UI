@@ -57,9 +57,9 @@ export default function TaskList({
   }
 
   return (
-    <ul>
+    <ul className="task-list">
       {tasks.toReversed().map((task) => (
-        <li key={task.id}>
+        <li className="task-card" key={task.id}>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
           <p>
@@ -68,26 +68,28 @@ export default function TaskList({
               {getStatusLabel(task.status)}
             </span>
           </p>
-          <button
-            onClick={() => onDeleteTask(task.id)}
-            disabled={deletingTaskId === task.id || Boolean(activeSession)}
-          >
-            {deletingTaskId === task.id
-              ? "Deleting..."
-              : activeSession
-                ? "Locked during session"
-                : "Delete"}
-          </button>
-          <button
-            onClick={() => onStartSession(task.id)}
-            disabled={isStartButtonDisabled(
-              task,
-              startingTaskId,
-              activeSession,
-            )}
-          >
-            {getStartButtonText(task, startingTaskId, activeSession)}
-          </button>
+          <div className="task-actions">
+            <button
+              onClick={() => onDeleteTask(task.id)}
+              disabled={deletingTaskId === task.id || Boolean(activeSession)}
+            >
+              {deletingTaskId === task.id
+                ? "Deleting..."
+                : activeSession
+                  ? "Locked during session"
+                  : "Delete"}
+            </button>
+            <button
+              onClick={() => onStartSession(task.id)}
+              disabled={isStartButtonDisabled(
+                task,
+                startingTaskId,
+                activeSession,
+              )}
+            >
+              {getStartButtonText(task, startingTaskId, activeSession)}
+            </button>
+          </div>
         </li>
       ))}
     </ul>
