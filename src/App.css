@@ -103,3 +103,64 @@
 .active-session-actions {
   margin-top: 1rem;
 }
+
+.session-history {
+  margin-top: 1.5rem;
+}
+
+.session-list {
+  padding: 0;
+  margin: 0;
+}
+
+.session-card {
+  list-style: none;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.session-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.session-card-header h3 {
+  margin: 0;
+}
+
+.session-card-header span {
+  font-weight: 700;
+}
+
+.session-meta {
+  color: #555;
+  margin: 0.4rem 0;
+}
+
+.session-notes {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+
+.session-notes h4 {
+  margin: 0 0 0.35rem;
+}
+
+.session-notes p {
+  margin: 0;
+}
+
+.empty-state {
+  padding: 1rem;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  color: #555;
+  background: #fafafa;
+}
