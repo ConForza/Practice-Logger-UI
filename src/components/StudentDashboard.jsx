@@ -16,20 +16,11 @@ export default function StudentDashboard({
   onSessionNotesChange,
   onDeleteTask,
   onStartSession,
-  onLogout,
-  currentUser,
-  ...otherProps
 }) {
   return (
     <div className="tasks-section">
       <div className="dashboard-header">
         <h2>Student Dashboard</h2>
-
-        {currentUser && <p className="user-role">Role: {currentUser.role}</p>}
-
-        <button type="button" onClick={onLogout}>
-          Logout
-        </button>
       </div>
 
       <ActiveSessionPanel

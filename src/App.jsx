@@ -242,14 +242,10 @@ function App() {
 
     switch (currentUser.role) {
       case "teacher":
-        return (
-          <TeacherDashboard currentUser={currentUser} onLogout={handleLogout} />
-        );
+        return <TeacherDashboard />;
 
       case "admin":
-        return (
-          <AdminDashboard currentUser={currentUser} onLogout={handleLogout} />
-        );
+        return <AdminDashboard />;
 
       default:
         return (
@@ -267,8 +263,6 @@ function App() {
             onSessionNotesChange={(e) => setSessionNotes(e.target.value)}
             onDeleteTask={handleDeleteTask}
             onStartSession={handleStartSession}
-            onLogout={handleLogout}
-            currentUser={currentUser}
           />
         );
     }
@@ -276,28 +270,35 @@ function App() {
 
   return (
     <main className="app-container">
-      <h1>Practice Tracker</h1>
-
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!token ? (
-        <LoginForm
-          authMode={authMode}
-          email={email}
-          password={password}
-          loading={loading}
-          onEmailChange={(e) => setEmail(e.target.value)}
-          onPasswordChange={(e) => setPassword(e.target.value)}
-          onLogin={handleLogin}
-          onRegister={handleRegister}
-          onToggleMode={() => {
-            setError("");
-            setAuthMode((prevMode) =>
-              prevMode === "login" ? "register" : "login",
-            );
-          }}
-        />
+        <>
+          <div className="auth-header">
+            <h1>Practice Tracker</h1>
+            <p>Track tasks, sessions, and progress.</p>
+          </div>
+
+          <LoginForm
+            authMode={authMode}
+            email={email}
+            password={password}
+            loading={loading}
+            onEmailChange={(e) => setEmail(e.target.value)}
+            onPasswordChange={(e) => setPassword(e.target.value)}
+            onLogin={handleLogin}
+            onRegister={handleRegister}
+            onToggleMode={() => {
+              setError("");
+              setAuthMode((prevMode) =>
+                prevMode === "login" ? "register" : "login",
+              );
+            }}
+          />
+        </>
       ) : (
-        <AppShell>{renderDashboard()}</AppShell>
+        <AppShell currentUser={currentUser} onLogout={handleLogout}>
+          {renderDashboard()}
+        </AppShell>
       )}
     </main>
   );
