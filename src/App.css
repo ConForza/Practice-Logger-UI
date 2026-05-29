@@ -4,8 +4,46 @@
   flex-direction: column;
 }
 
-.app-shell__main {
+.app-shell__body {
+  display: flex;
+  min-height: calc(100vh - 80px);
+}
+
+.sidebar {
+  width: 220px;
+  border-right: 1px solid #ddd;
+  padding: 1rem;
+  background: #f8f8f8;
+}
+
+.sidebar__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar__list li + li {
+  margin-top: 0.5rem;
+}
+
+.sidebar__item {
   width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.sidebar__item:hover {
+  background: #eee;
+}
+
+.app-shell__main {
+  flex: 1;
+  padding: 1.5rem;
 }
 
 .auth-header {
@@ -354,4 +392,63 @@ button:disabled {
 .link-button:hover:not(:disabled) {
   text-decoration: underline;
   background: none;
+}
+
+@media (max-width: 700px) {
+  .app-shell__body {
+    display: block;
+    min-height: auto;
+  }
+
+  .app-shell__main {
+    padding: 1rem;
+    padding-bottom: 5rem;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    border-right: none;
+    border-top: 1px solid #ddd;
+    padding: 0.5rem;
+    background: #fff;
+    z-index: 10;
+  }
+
+  .sidebar__list {
+    display: flex;
+    justify-content: space-around;
+    gap: 0.25rem;
+  }
+
+  .sidebar__list li {
+    flex: 1;
+  }
+
+  .sidebar__list li + li {
+    margin-top: 0;
+  }
+
+  .sidebar__item {
+    text-align: center;
+    padding: 0.6rem 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .navbar {
+    align-items: flex-start;
+  }
+
+  .navbar__actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+
+  .navbar__role {
+    font-size: 0.85rem;
+  }
 }
