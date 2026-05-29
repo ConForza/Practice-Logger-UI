@@ -9,11 +9,15 @@ import {
   endSession,
   getSessions,
   getActiveSession,
+  getCurrentUser,
 } from "./services/api";
 
 import "./App.css";
 import LoginForm from "./components/LoginForm";
 import StudentDashboard from "./components/StudentDashboard";
+import TeacherDashboard from "./components/TeacherDashboard";
+import AdminDashboard from "./components/AdminDashboard";
+
 const TOKEN_STORAGE_KEY = "practiceTrackerToken";
 
 function App() {
@@ -21,6 +25,7 @@ function App() {
   const [password, setPassword] = useState("");
 
   const [token, setToken] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [deletingTaskId, setDeletingTaskId] = useState(null);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
@@ -46,6 +51,7 @@ function App() {
       const data = await login(email, password);
       setToken(data.access_token);
       localStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
+      await fetchCurrentUser(data.access_token);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,6 +68,7 @@ function App() {
       const data = await login(email, password);
       setToken(data.access_token);
       localStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
+      await fetchCurrentUser(data.access_token);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -78,6 +85,13 @@ function App() {
     setSessions([]);
     setActiveSession(null);
     setSessionNotes("");
+    setCurrentUser(null);
+  }
+
+  async function fetchCurrentUser(tokenToUse) {
+    const userData = await getCurrentUser(tokenToUse);
+    setCurrentUser(userData);
+    return userData;
   }
 
   async function isAuthError(message) {
@@ -198,9 +212,22 @@ function App() {
   useEffect(() => {
     const savedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
 
-    if (savedToken) {
-      setToken(savedToken);
+    if (!savedToken) {
+      setLoading(false);
+      return;
     }
+
+    setToken(savedToken);
+
+    fetchCurrentUser(savedToken)
+      .catch(() => {
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+        setToken("");
+        setCurrentUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -208,6 +235,43 @@ function App() {
 
     fetchDashboardData(token);
   }, [token]);
+
+  function renderDashboard() {
+    if (!currentUser) return null;
+
+    switch (currentUser.role) {
+      case "teacher":
+        return (
+          <TeacherDashboard currentUser={currentUser} onLogout={handleLogout} />
+        );
+
+      case "admin":
+        return (
+          <AdminDashboard currentUser={currentUser} onLogout={handleLogout} />
+        );
+
+      default:
+        return (
+          <StudentDashboard
+            activeSession={activeSession}
+            sessionNotes={sessionNotes}
+            isEndingSession={isEndingSession}
+            tasks={tasks}
+            sessions={sessions}
+            deletingTaskId={deletingTaskId}
+            startingTaskId={startingTaskId}
+            isCreatingTask={isCreatingTask}
+            onCreateTask={handleCreateTask}
+            onEndSession={handleEndSession}
+            onSessionNotesChange={(e) => setSessionNotes(e.target.value)}
+            onDeleteTask={handleDeleteTask}
+            onStartSession={handleStartSession}
+            onLogout={handleLogout}
+            currentUser={currentUser}
+          />
+        );
+    }
+  }
 
   return (
     <main className="app-container">
@@ -232,22 +296,7 @@ function App() {
           }}
         />
       ) : (
-        <StudentDashboard
-          activeSession={activeSession}
-          sessionNotes={sessionNotes}
-          isEndingSession={isEndingSession}
-          tasks={tasks}
-          sessions={sessions}
-          deletingTaskId={deletingTaskId}
-          startingTaskId={startingTaskId}
-          isCreatingTask={isCreatingTask}
-          onCreateTask={handleCreateTask}
-          onEndSession={handleEndSession}
-          onSessionNotesChange={(e) => setSessionNotes(e.target.value)}
-          onDeleteTask={handleDeleteTask}
-          onStartSession={handleStartSession}
-          onLogout={handleLogout}
-        />
+        renderDashboard()
       )}
     </main>
   );

@@ -48,6 +48,20 @@ export async function login(email, password) {
   return response.json();
 }
 
+export async function getCurrentUser(token) {
+  const response = await fetch(`${API_BASE_URL}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch current user");
+  }
+
+  return response.json();
+}
+
 export async function getTasks(token) {
   const response = await fetch(`${API_BASE_URL}/tasks`, {
     headers: getAuthHeader(token),
