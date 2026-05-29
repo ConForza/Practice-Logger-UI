@@ -17,6 +17,7 @@ import LoginForm from "./components/LoginForm";
 import StudentDashboard from "./components/StudentDashboard";
 import TeacherDashboard from "./components/TeacherDashboard";
 import AdminDashboard from "./components/AdminDashboard";
+import AppShell from "./components/layout/AppShell";
 
 const TOKEN_STORAGE_KEY = "practiceTrackerToken";
 
@@ -296,7 +297,7 @@ function App() {
           }}
         />
       ) : (
-        renderDashboard()
+        <AppShell>{renderDashboard()}</AppShell>
       )}
     </main>
   );
