@@ -62,6 +62,7 @@
 
 .navbar {
   width: 100%;
+  box-sizing: border-box;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #ddd;
   display: flex;
@@ -85,6 +86,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding-right: 0.5rem;
 }
 
 .navbar__role {
@@ -97,20 +99,34 @@
   padding: 1rem;
 }
 
-.tasks-section {
-  padding: 0;
+.dashboard-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
+.dashboard-page__header {
   margin-bottom: 1.5rem;
 }
 
-.dashboard-header h2 {
+.dashboard-page__header h2 {
+  margin: 0 0 0.35rem;
+}
+
+.dashboard-page__header p {
   margin: 0;
+  color: #555;
+}
+
+.dashboard-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
 }
 
 .task-section {
@@ -394,15 +410,65 @@ button:disabled {
   background: none;
 }
 
+@media (max-width: 900px) {
+  .navbar {
+    padding-right: 1.25rem;
+  }
+
+  .navbar__actions {
+    padding-right: 0.75rem;
+  }
+}
+
 @media (max-width: 700px) {
+  .app-container {
+    padding: 0;
+  }
+
+  .navbar {
+    padding: 0.75rem 1rem;
+    align-items: flex-start;
+  }
+
+  .navbar__actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+    padding-right: 0.5rem;
+  }
+
+  .navbar__eyebrow {
+    font-size: 0.7rem;
+  }
+
+  .navbar__title {
+    font-size: 1.35rem;
+  }
+
+  .navbar__role {
+    font-size: 0.85rem;
+  }
+
   .app-shell__body {
     display: block;
     min-height: auto;
   }
 
   .app-shell__main {
-    padding: 1rem;
+    padding: 0.75rem;
     padding-bottom: 5rem;
+  }
+
+  .dashboard-page__header {
+    margin-bottom: 1rem;
+  }
+
+  .dashboard-page__header h2 {
+    font-size: 1.3rem;
+  }
+
+  .dashboard-page__header p {
+    font-size: 0.95rem;
   }
 
   .sidebar {
@@ -435,20 +501,6 @@ button:disabled {
   .sidebar__item {
     text-align: center;
     padding: 0.6rem 0.4rem;
-    font-size: 0.85rem;
-  }
-
-  .navbar {
-    align-items: flex-start;
-  }
-
-  .navbar__actions {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.4rem;
-  }
-
-  .navbar__role {
     font-size: 0.85rem;
   }
 }

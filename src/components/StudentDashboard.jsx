@@ -18,9 +18,12 @@ export default function StudentDashboard({
   onStartSession,
 }) {
   return (
-    <div className="tasks-section">
-      <div className="dashboard-header">
-        <h2>Student Dashboard</h2>
+    <div className="dashboard-page student-dashboard">
+      <div className="dashboard-page__header">
+        <div>
+          <h2>Student Dashboard</h2>
+          <p>Manage your practice tasks and session history.</p>
+        </div>
       </div>
 
       <ActiveSessionPanel
