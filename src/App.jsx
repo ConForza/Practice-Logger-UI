@@ -95,7 +95,7 @@ function App() {
     return userData;
   }
 
-  async function isAuthError(message) {
+  function isAuthError(message) {
     return (
       message === "Could not validate credentials" ||
       message === "Not authenticated" ||
