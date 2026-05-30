@@ -14,7 +14,7 @@ import {
 
 import "./App.css";
 import LoginForm from "./components/LoginForm";
-import StudentDashboard from "./components/StudentDashboard";
+import StudentDashboard from "./components/student/StudentDashboard";
 import TeacherDashboard from "./components/TeacherDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import AppShell from "./components/layout/AppShell";
