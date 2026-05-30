@@ -15,8 +15,8 @@ import {
 import "./App.css";
 import LoginForm from "./components/LoginForm";
 import StudentDashboard from "./components/student/StudentDashboard";
-import TeacherDashboard from "./components/TeacherDashboard";
-import AdminDashboard from "./components/AdminDashboard";
+import TeacherDashboard from "./components/teacher/TeacherDashboard";
+import AdminDashboard from "./components/admin/AdminDashboard";
 import AppShell from "./components/layout/AppShell";
 
 const TOKEN_STORAGE_KEY = "practiceTrackerToken";
