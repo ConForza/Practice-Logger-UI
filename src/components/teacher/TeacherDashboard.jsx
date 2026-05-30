@@ -1,4 +1,4 @@
-export default function TeacherDashboard() {
+export default function TeacherDashboard({ activeView }) {
   return (
     <div className="dashboard-page teacher-dashboard">
       <div className="dashboard-page__header">
@@ -9,11 +9,8 @@ export default function TeacherDashboard() {
       </div>
 
       <section className="dashboard-card">
-        <h3>Teacher features coming soon</h3>
-        <p>
-          Soon you will be able to view students, inspect practice history, and
-          assign tasks.
-        </p>
+        <h3>{activeView}</h3>
+        <p>Teacher {activeView} features coming soon.</p>
       </section>
     </div>
   );

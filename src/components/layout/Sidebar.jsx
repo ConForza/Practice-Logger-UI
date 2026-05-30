@@ -1,10 +1,22 @@
 const NAV_ITEMS_BY_ROLE = {
-  student: ["Dashboard", "Tasks", "Sessions"],
-  teacher: ["Dashboard", "Students", "Assignments"],
-  admin: ["Dashboard", "Users", "Settings"],
+  student: [
+    { label: "Dashboard", value: "dashboard" },
+    { label: "Tasks", value: "tasks" },
+    { label: "Sessions", value: "sessions" },
+  ],
+  teacher: [
+    { label: "Dashboard", value: "dashboard" },
+    { label: "Students", value: "students" },
+    { label: "Assignments", value: "assignments" },
+  ],
+  admin: [
+    { label: "Dashboard", value: "dashboard" },
+    { label: "Users", value: "users" },
+    { label: "Settings", value: "settings" },
+  ],
 };
 
-export default function Sidebar({ currentUser }) {
+export default function Sidebar({ currentUser, activeView, onViewChange }) {
   const role = currentUser?.role || "student";
   const navItems = NAV_ITEMS_BY_ROLE[role] || NAV_ITEMS_BY_ROLE.student;
 
@@ -13,9 +25,17 @@ export default function Sidebar({ currentUser }) {
       <nav>
         <ul className="sidebar__list">
           {navItems.map((item) => (
-            <li key={item}>
-              <button type="button" className="sidebar__item">
-                {item}
+            <li key={item.value}>
+              <button
+                type="button"
+                className={
+                  activeView === item.value
+                    ? "sidebar__item sidebar__item--active"
+                    : "sidebar__item"
+                }
+                onClick={() => onViewChange(item.value)}
+              >
+                {item.label}
               </button>
             </li>
           ))}

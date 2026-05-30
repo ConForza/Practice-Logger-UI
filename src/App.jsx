@@ -37,6 +37,7 @@ function App() {
   const [isEndingSession, setIsEndingSession] = useState(false);
   const [sessions, setSessions] = useState([]);
   const [isLoadingSessions, setIsLoadingSessions] = useState(false);
+  const [activeView, setActiveView] = useState("dashboard");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -87,6 +88,7 @@ function App() {
     setActiveSession(null);
     setSessionNotes("");
     setCurrentUser(null);
+    setActiveView("dashboard");
   }
 
   async function fetchCurrentUser(tokenToUse) {
@@ -242,14 +244,15 @@ function App() {
 
     switch (currentUser.role) {
       case "teacher":
-        return <TeacherDashboard />;
+        return <TeacherDashboard activeView={activeView} />;
 
       case "admin":
-        return <AdminDashboard />;
+        return <AdminDashboard activeView={activeView} />;
 
       default:
         return (
           <StudentDashboard
+            activeView={activeView}
             activeSession={activeSession}
             sessionNotes={sessionNotes}
             isEndingSession={isEndingSession}
@@ -296,7 +299,12 @@ function App() {
           />
         </>
       ) : (
-        <AppShell currentUser={currentUser} onLogout={handleLogout}>
+        <AppShell
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          activeView={activeView}
+          onViewChange={setActiveView}
+        >
           {renderDashboard()}
         </AppShell>
       )}

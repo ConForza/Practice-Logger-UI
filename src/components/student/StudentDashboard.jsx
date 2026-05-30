@@ -3,6 +3,7 @@ import SessionHistorySection from "./SessionHistorySection";
 import ActiveSessionPanel from "./ActiveSessionPanel";
 
 export default function StudentDashboard({
+  activeView,
   activeSession,
   sessionNotes,
   isEndingSession,
@@ -26,26 +27,47 @@ export default function StudentDashboard({
         </div>
       </div>
 
-      <ActiveSessionPanel
-        activeSession={activeSession}
-        sessionNotes={sessionNotes}
-        isEndingSession={isEndingSession}
-        onSessionNotesChange={onSessionNotesChange}
-        onEndSession={onEndSession}
-      />
+      {activeView === "dashboard" && (
+        <>
+          <ActiveSessionPanel
+            activeSession={activeSession}
+            sessionNotes={sessionNotes}
+            isEndingSession={isEndingSession}
+            onSessionNotesChange={onSessionNotesChange}
+            onEndSession={onEndSession}
+          />
 
-      <TaskSection
-        tasks={tasks}
-        activeSession={activeSession}
-        deletingTaskId={deletingTaskId}
-        startingTaskId={startingTaskId}
-        isCreatingTask={isCreatingTask}
-        onCreateTask={onCreateTask}
-        onDeleteTask={onDeleteTask}
-        onStartSession={onStartSession}
-      />
+          <TaskSection
+            tasks={tasks}
+            activeSession={activeSession}
+            deletingTaskId={deletingTaskId}
+            startingTaskId={startingTaskId}
+            isCreatingTask={isCreatingTask}
+            onCreateTask={onCreateTask}
+            onDeleteTask={onDeleteTask}
+            onStartSession={onStartSession}
+          />
 
-      <SessionHistorySection sessions={sessions} />
+          <SessionHistorySection sessions={sessions} />
+        </>
+      )}
+
+      {activeView === "tasks" && (
+        <TaskSection
+          tasks={tasks}
+          activeSession={activeSession}
+          deletingTaskId={deletingTaskId}
+          startingTaskId={startingTaskId}
+          isCreatingTask={isCreatingTask}
+          onCreateTask={onCreateTask}
+          onDeleteTask={onDeleteTask}
+          onStartSession={onStartSession}
+        />
+      )}
+
+      {activeView === "sessions" && (
+        <SessionHistorySection sessions={sessions} />
+      )}
     </div>
   );
 }

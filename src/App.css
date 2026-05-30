@@ -51,6 +51,11 @@ body {
   background: #eee;
 }
 
+.sidebar__item--active {
+  background: #e8e8e8;
+  font-weight: 700;
+}
+
 .app-shell__main {
   flex: 1;
   padding: 1.5rem;
