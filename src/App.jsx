@@ -273,7 +273,7 @@ function App() {
 
   return (
     <main className="app-container">
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="app-error">{error}</p>}
       {!token ? (
         <>
           <div className="auth-header">
@@ -305,7 +305,11 @@ function App() {
           activeView={activeView}
           onViewChange={setActiveView}
         >
-          {renderDashboard()}
+          {loading ? (
+            <p className="loading-message">Loading dashboard...</p>
+          ) : (
+            renderDashboard()
+          )}
         </AppShell>
       )}
     </main>
