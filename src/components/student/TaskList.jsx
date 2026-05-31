@@ -53,7 +53,12 @@ export default function TaskList({
   activeSession,
 }) {
   if (!tasks || tasks.length === 0) {
-    return <p>No tasks found.</p>;
+    return (
+      <div className="empty-state">
+        <h3>No practice tasks yet</h3>
+        <p>Create your first practice task to start tracking your work.</p>
+      </div>
+    );
   }
 
   return (

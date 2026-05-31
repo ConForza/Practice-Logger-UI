@@ -6,7 +6,12 @@ export default function ActiveSessionPanel({
   onEndSession,
 }) {
   if (!activeSession) {
-    return null;
+    return (
+      <section className="empty-state active-session">
+        <h3>No active practice session</h3>
+        <p>Start a task below when you are ready to practise.</p>
+      </section>
+    );
   }
 
   return (
