@@ -2,6 +2,21 @@ import TaskSection from "./TaskSection";
 import SessionHistorySection from "./SessionHistorySection";
 import ActiveSessionPanel from "./ActiveSessionPanel";
 
+const STUDENT_VIEW_COPY = {
+  dashboard: {
+    title: "Student Dashboard",
+    description: "Manage your practice tasks and session history.",
+  },
+  tasks: {
+    title: "Practice Tasks",
+    description: "Create, review, and start practice tasks.",
+  },
+  sessions: {
+    title: "Practice Sessions",
+    description: "Review your completed practice sessions.",
+  },
+};
+
 export default function StudentDashboard({
   activeView,
   activeSession,
@@ -18,12 +33,14 @@ export default function StudentDashboard({
   onDeleteTask,
   onStartSession,
 }) {
+  const viewCopy = STUDENT_VIEW_COPY[activeView] || STUDENT_VIEW_COPY.dashboard;
+
   return (
     <div className="dashboard-page student-dashboard">
       <div className="dashboard-page__header">
         <div>
-          <h2>Student Dashboard</h2>
-          <p>Manage your practice tasks and session history.</p>
+          <h2>{viewCopy.title}</h2>
+          <p>{viewCopy.description}</p>
         </div>
       </div>
 
