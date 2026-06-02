@@ -206,3 +206,20 @@ export async function getTeacherStudents(token) {
 
   return response.json();
 }
+
+export async function getTeacherStudentSessions(token, studentId) {
+  const response = await fetch(
+    `${API_BASE_URL}/teacher/students/${studentId}/sessions`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch student sessions");
+  }
+
+  return response.json();
+}
