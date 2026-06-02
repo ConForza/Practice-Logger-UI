@@ -32,23 +32,23 @@ export default function TeacherDashboard({ activeView, token }) {
   const [studentsError, setStudentsError] = useState("");
   const viewCopy = TEACHER_VIEW_COPY[activeView] || TEACHER_VIEW_COPY.dashboard;
 
+  async function fetchStudents() {
+    setIsLoadingStudents(true);
+    setStudentsError("");
+
+    try {
+      const studentsData = await getTeacherStudents(token);
+      setStudents(studentsData);
+    } catch (err) {
+      setStudentsError(err.message);
+    } finally {
+      setIsLoadingStudents(false);
+    }
+  }
+
   useEffect(() => {
     if (activeView !== "students") return;
     if (!token) return;
-
-    async function fetchStudents() {
-      setIsLoadingStudents(true);
-      setStudentsError("");
-
-      try {
-        const studentsData = await getTeacherStudents(token);
-        setStudents(studentsData);
-      } catch (err) {
-        setStudentsError(err.message);
-      } finally {
-        setIsLoadingStudents(false);
-      }
-    }
 
     fetchStudents();
   }, [activeView, token]);
@@ -66,8 +66,30 @@ export default function TeacherDashboard({ activeView, token }) {
         <h3>{viewCopy.cardTitle}</h3>
         <p>{viewCopy.cardText}</p>
 
+        {activeView === "students" && (
+          <div className="teacher-student-actions">
+            <button
+              type="button"
+              onClick={fetchStudents}
+              disabled={isLoadingStudents}
+            >
+              {isLoadingStudents ? "Refreshing..." : "Refresh students"}
+            </button>
+          </div>
+        )}
+
         {isLoadingStudents && <p>Loading students...</p>}
-        {studentsError && <p className="app-error">{studentsError}</p>}
+        {studentsError && (
+          <div className="empty-state">
+            <h3>Could not load students</h3>
+
+            <p>{studentsError}</p>
+
+            <button type="button" onClick={fetchStudents}>
+              Try again
+            </button>
+          </div>
+        )}
 
         {activeView === "students" && !isLoadingStudents && !studentsError && (
           <StudentList students={students} />
