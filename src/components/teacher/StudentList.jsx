@@ -1,4 +1,8 @@
-export default function StudentList({ students }) {
+export default function StudentList({
+  students,
+  selectedStudent,
+  onSelectStudent,
+}) {
   if (students.length === 0) {
     return (
       <div className="empty-state">
@@ -11,21 +15,31 @@ export default function StudentList({ students }) {
   return (
     <ul className="teacher-student-list">
       {students.map((student) => (
-        <li key={student.id} className="teacher-student-card">
-          <div>
-            <h3>{student.email}</h3>
-            <p>Role: {student.role}</p>
-          </div>
-
-          <span
+        <li key={student.id}>
+          <button
+            type="button"
             className={
-              student.is_active
-                ? "status-badge status-completed"
-                : "status-badge status-pending"
+              selectedStudent?.id === student.id
+                ? "teacher-student-card teacher-student-card--selected"
+                : "teacher-student-card"
             }
+            onClick={() => onSelectStudent(student)}
           >
-            {student.is_active ? "Active" : "Inactive"}
-          </span>
+            <div>
+              <h3>{student.email}</h3>
+              <p>Role: {student.role}</p>
+            </div>
+
+            <span
+              className={
+                student.is_active
+                  ? "status-badge status-completed"
+                  : "status-badge status-pending"
+              }
+            >
+              {student.is_active ? "Active" : "Inactive"}
+            </span>
+          </button>
         </li>
       ))}
     </ul>

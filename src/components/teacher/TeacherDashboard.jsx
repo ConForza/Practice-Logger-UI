@@ -30,6 +30,7 @@ export default function TeacherDashboard({ activeView, token }) {
   const [students, setStudents] = useState([]);
   const [isLoadingStudents, setIsLoadingStudents] = useState(false);
   const [studentsError, setStudentsError] = useState("");
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const viewCopy = TEACHER_VIEW_COPY[activeView] || TEACHER_VIEW_COPY.dashboard;
 
   async function fetchStudents() {
@@ -92,7 +93,26 @@ export default function TeacherDashboard({ activeView, token }) {
         )}
 
         {activeView === "students" && !isLoadingStudents && !studentsError && (
-          <StudentList students={students} />
+          <div className="teacher-students-layout">
+            <StudentList
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+            />
+
+            {selectedStudent && (
+              <aside className="selected-student-panel">
+                <p className="selected-student-panel__eyebrow">
+                  Selected student
+                </p>
+                <h3>{selectedStudent.email}</h3>
+                <p>
+                  You can review this student&apos;s practice history in the
+                  next step.
+                </p>
+              </aside>
+            )}
+          </div>
         )}
       </section>
     </div>

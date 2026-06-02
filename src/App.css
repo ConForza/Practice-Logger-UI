@@ -458,15 +458,20 @@ button:disabled {
 }
 
 .teacher-student-card {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  text-align: left;
   padding: 1rem;
   margin-bottom: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 10px;
   background: #fff;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 
 .teacher-student-card h3 {
@@ -474,6 +479,43 @@ button:disabled {
 }
 
 .teacher-student-card p {
+  margin: 0;
+  color: #555;
+}
+
+.teacher-student-card--selected {
+  border-color: #007bff;
+  background: #f0f7ff;
+}
+
+.teacher-students-layout {
+  margin-top: 1rem;
+}
+
+.selected-student-panel {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #b8d4ff;
+  border-left: 4px solid #007bff;
+  border-radius: 12px;
+  background: #f8fbff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.selected-student-panel__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #005fcc;
+}
+
+.selected-student-panel h3 {
+  margin: 0 0 0.5rem;
+}
+
+.selected-student-panel p {
   margin: 0;
   color: #555;
 }
