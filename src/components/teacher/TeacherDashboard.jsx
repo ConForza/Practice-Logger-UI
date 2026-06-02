@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { getTeacherStudents } from "../../services/api";
 
 const TEACHER_VIEW_COPY = {
@@ -24,8 +25,32 @@ const TEACHER_VIEW_COPY = {
   },
 };
 
-export default function TeacherDashboard({ activeView }) {
+export default function TeacherDashboard({ activeView, token }) {
+  const [students, setStudents] = useState([]);
+  const [isLoadingStudents, setIsLoadingStudents] = useState(false);
+  const [studentsError, setStudentsError] = useState("");
   const viewCopy = TEACHER_VIEW_COPY[activeView] || TEACHER_VIEW_COPY.dashboard;
+
+  useEffect(() => {
+    if (activeView !== "students") return;
+    if (!token) return;
+
+    async function fetchStudents() {
+      setIsLoadingStudents(true);
+      setStudentsError("");
+
+      try {
+        const studentsData = await getTeacherStudents(token);
+        setStudents(studentsData);
+      } catch (err) {
+        setStudentsError(err.message);
+      } finally {
+        setIsLoadingStudents(false);
+      }
+    }
+
+    fetchStudents();
+  }, [activeView, token]);
 
   return (
     <div className="dashboard-page teacher-dashboard">
@@ -39,6 +64,13 @@ export default function TeacherDashboard({ activeView }) {
       <section className="dashboard-card">
         <h3>{viewCopy.cardTitle}</h3>
         <p>{viewCopy.cardText}</p>
+
+        {isLoadingStudents && <p>Loading students...</p>}
+        {studentsError && <p className="app-error">{studentsError}</p>}
+
+        {activeView === "students" && (
+          <pre>{JSON.stringify(students, null, 2)}</pre>
+        )}
       </section>
     </div>
   );

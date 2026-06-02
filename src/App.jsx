@@ -244,7 +244,7 @@ function App() {
 
     switch (currentUser.role) {
       case "teacher":
-        return <TeacherDashboard activeView={activeView} />;
+        return <TeacherDashboard activeView={activeView} token={token} />;
 
       case "admin":
         return <AdminDashboard activeView={activeView} />;
