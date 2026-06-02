@@ -1,3 +1,5 @@
+import { getTeacherStudents } from "../../services/api";
+
 const TEACHER_VIEW_COPY = {
   dashboard: {
     title: "Teacher Dashboard",

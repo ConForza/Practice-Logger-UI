@@ -192,3 +192,17 @@ export async function deleteSession(token, sessionId) {
     await handleApiError(response, "Failed to delete session");
   }
 }
+
+export async function getTeacherStudents(token) {
+  const response = await fetch(`${API_BASE_URL}/teacher/students`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch students");
+  }
+
+  return response.json();
+}
