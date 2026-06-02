@@ -12,10 +12,10 @@ const TEACHER_VIEW_COPY = {
   },
   students: {
     title: "Students",
-    description: "View students and review their practice activity.",
-    cardTitle: "Student list coming soon",
+    description: "View registered student users.",
+    cardTitle: "Student list",
     cardText:
-      "This view will show students connected to your teaching dashboard.",
+      "These are the student accounts currently available to your teacher dashboard.",
   },
   assignments: {
     title: "Assignments",
