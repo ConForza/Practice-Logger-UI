@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getTeacherStudents } from "../../services/api";
+import StudentList from "./StudentList";
 
 const TEACHER_VIEW_COPY = {
   dashboard: {
@@ -68,8 +69,8 @@ export default function TeacherDashboard({ activeView, token }) {
         {isLoadingStudents && <p>Loading students...</p>}
         {studentsError && <p className="app-error">{studentsError}</p>}
 
-        {activeView === "students" && (
-          <pre>{JSON.stringify(students, null, 2)}</pre>
+        {activeView === "students" && !isLoadingStudents && !studentsError && (
+          <StudentList students={students} />
         )}
       </section>
     </div>

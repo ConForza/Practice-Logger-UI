@@ -451,6 +451,33 @@ button:disabled {
   color: #555;
 }
 
+.teacher-student-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.teacher-student-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.teacher-student-card h3 {
+  margin: 0 0 0.35rem;
+}
+
+.teacher-student-card p {
+  margin: 0;
+  color: #555;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;
@@ -544,5 +571,10 @@ button:disabled {
     text-align: center;
     padding: 0.6rem 0.4rem;
     font-size: 0.85rem;
+  }
+
+  .teacher-student-card {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
