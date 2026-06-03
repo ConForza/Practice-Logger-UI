@@ -143,6 +143,20 @@ export default function TeacherDashboard({ activeView, token }) {
                 <h3>{selectedStudent.email}</h3>
                 <p>Review this student's completed practice sessions below.</p>
 
+                <div className="selected-student-panel__actions">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      fetchSelectedStudentSessions(selectedStudent.id)
+                    }
+                    disabled={isLoadingStudentSessions}
+                  >
+                    {isLoadingStudentSessions
+                      ? "Refreshing..."
+                      : "Refresh sessions"}
+                  </button>
+                </div>
+
                 {isLoadingStudentSessions && (
                   <p className="loading-message">Loading student sessions...</p>
                 )}
@@ -163,7 +177,15 @@ export default function TeacherDashboard({ activeView, token }) {
                 )}
 
                 {!isLoadingStudentSessions && !studentSessionsError && (
-                  <StudentSessionList sessions={selectedStudentSessions} />
+                  <>
+                    <p className="selected-student-panel__summary">
+                      {selectedStudentSessions.length} completed practice
+                      session
+                      {selectedStudentSessions.length === 1 ? "" : "s"}
+                    </p>
+
+                    <StudentSessionList sessions={selectedStudentSessions} />
+                  </>
                 )}
               </aside>
             )}

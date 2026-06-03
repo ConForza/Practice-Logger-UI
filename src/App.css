@@ -520,6 +520,17 @@ button:disabled {
   color: #555;
 }
 
+.selected-student-panel__actions {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.selected-student-panel__summary {
+  margin: 1rem 0 0;
+  font-weight: 600;
+  color: #333;
+}
+
 .teacher-student-actions {
   margin-top: 1rem;
   margin-bottom: 1rem;
