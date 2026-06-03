@@ -4,6 +4,7 @@ import {
   getTeacherStudentSessions,
 } from "../../services/api";
 import StudentList from "./StudentList";
+import StudentSessionList from "./StudentSessionList";
 
 const TEACHER_VIEW_COPY = {
   dashboard: {
@@ -140,9 +141,7 @@ export default function TeacherDashboard({ activeView, token }) {
                   Selected student
                 </p>
                 <h3>{selectedStudent.email}</h3>
-                <p>
-                  Review this student&apos;s completed practice sessions below.
-                </p>
+                <p>Review this student's completed practice sessions below.</p>
 
                 {isLoadingStudentSessions && (
                   <p className="loading-message">Loading student sessions...</p>
@@ -163,30 +162,9 @@ export default function TeacherDashboard({ activeView, token }) {
                   </div>
                 )}
 
-                {!isLoadingStudentSessions &&
-                  !studentSessionsError &&
-                  selectedStudentSessions.length === 0 && (
-                    <div className="empty-state">
-                      <h3>No completed sessions yet</h3>
-                      <p>
-                        This student&apos;s completed practice sessions will
-                        appear here.
-                      </p>
-                    </div>
-                  )}
-
-                {!isLoadingStudentSessions &&
-                  !studentSessionsError &&
-                  selectedStudentSessions.length > 0 && (
-                    <div className="empty-state">
-                      <h3>Sessions loaded</h3>
-                      <p>
-                        {selectedStudentSessions.length} completed practice
-                        session
-                        {selectedStudentSessions.length === 1 ? "" : "s"} found.
-                      </p>
-                    </div>
-                  )}
+                {!isLoadingStudentSessions && !studentSessionsError && (
+                  <StudentSessionList sessions={selectedStudentSessions} />
+                )}
               </aside>
             )}
           </div>

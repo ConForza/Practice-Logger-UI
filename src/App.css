@@ -525,6 +525,55 @@ button:disabled {
   margin-bottom: 1rem;
 }
 
+.teacher-session-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.teacher-session-card {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.teacher-session-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.teacher-session-card__header h4 {
+  margin: 0;
+}
+
+.teacher-session-card__header span {
+  font-weight: 700;
+}
+
+.teacher-session-card__meta {
+  margin: 0.4rem 0;
+  color: #555;
+}
+
+.teacher-session-card__notes {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+
+.teacher-session-card__notes h5 {
+  margin: 0 0 0.35rem;
+}
+
+.teacher-session-card__notes p {
+  margin: 0;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;
@@ -623,5 +672,10 @@ button:disabled {
   .teacher-student-card {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .teacher-session-card__header {
+    flex-direction: column;
+    gap: 0.25rem;
   }
 }
