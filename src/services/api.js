@@ -201,7 +201,7 @@ export async function getTeacherStudents(token) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch students");
+    await handleApiError(response, "Failed to fetch students");
   }
 
   return response.json();
@@ -218,7 +218,27 @@ export async function getTeacherStudentSessions(token, studentId) {
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch student sessions");
+    await handleApiError(response, "Failed to fetch student sessions");
+  }
+
+  return response.json();
+}
+
+export async function assignTaskToStudent(token, studentId, taskData) {
+  const response = await fetch(
+    `${API_BASE_URL}/teacher/students/${studentId}/tasks`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(taskData),
+    },
+  );
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to create task");
   }
 
   return response.json();
