@@ -585,6 +585,51 @@ button:disabled {
   margin: 0;
 }
 
+.teacher-assignment-form {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #d8e6ff;
+}
+
+.teacher-assignment-form h4 {
+  margin: 0 0 1rem;
+}
+
+.teacher-assignment-form label {
+  display: block;
+  margin-bottom: 0.85rem;
+  font-weight: 600;
+}
+
+.teacher-assignment-form input,
+.teacher-assignment-form textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.65rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.teacher-assignment-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.success-message {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #bde5c8;
+  border-radius: 8px;
+  background: #effaf2;
+  color: #205b2b;
+}
+
+.success-message p {
+  margin: 0;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;

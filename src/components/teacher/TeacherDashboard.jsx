@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {
+  assignTaskToStudent,
   getTeacherStudents,
   getTeacherStudentSessions,
 } from "../../services/api";
@@ -39,6 +40,11 @@ export default function TeacherDashboard({ activeView, token }) {
   const [isLoadingStudentSessions, setIsLoadingStudentSessions] =
     useState(false);
   const [studentSessionsError, setStudentSessionsError] = useState("");
+  const [assignmentTitle, setAssignmentTitle] = useState("");
+  const [assignmentDescription, setAssignmentDescription] = useState("");
+  const [isAssigningTask, setIsAssigningTask] = useState(false);
+  const [assignmentError, setAssignmentError] = useState("");
+  const [assignmentSuccess, setAssignmentSuccess] = useState("");
 
   const viewCopy = TEACHER_VIEW_COPY[activeView] || TEACHER_VIEW_COPY.dashboard;
 
@@ -72,6 +78,35 @@ export default function TeacherDashboard({ activeView, token }) {
     }
   }
 
+  async function handleAssignTask(e) {
+    e.preventDefault();
+
+    if (!selectedStudent) return;
+
+    setIsAssigningTask(true);
+    setAssignmentError("");
+    setAssignmentSuccess("");
+
+    try {
+      const assignedTask = await assignTaskToStudent(
+        token,
+        selectedStudent.id,
+        {
+          title: assignmentTitle,
+          description: assignmentDescription,
+        },
+      );
+
+      setAssignmentTitle("");
+      setAssignmentDescription("");
+      setAssignmentSuccess(`Assigned task: ${assignedTask.title}`);
+    } catch (err) {
+      setAssignmentError(err.message);
+    } finally {
+      setIsAssigningTask(false);
+    }
+  }
+
   useEffect(() => {
     if (activeView !== "students") return;
     if (!token) return;
@@ -80,6 +115,11 @@ export default function TeacherDashboard({ activeView, token }) {
   }, [activeView, token]);
 
   useEffect(() => {
+    setAssignmentTitle("");
+    setAssignmentDescription("");
+    setAssignmentError("");
+    setAssignmentSuccess("");
+
     if (!selectedStudent) {
       setSelectedStudentSessions([]);
       setStudentSessionsError("");
@@ -187,6 +227,49 @@ export default function TeacherDashboard({ activeView, token }) {
                     <StudentSessionList sessions={selectedStudentSessions} />
                   </>
                 )}
+
+                <form
+                  className="teacher-assignment-form"
+                  onSubmit={handleAssignTask}
+                >
+                  <h4>Assign a practice task</h4>
+
+                  {assignmentError && (
+                    <div className="empty-state">
+                      <h3>Could not assign task</h3>
+                      <p>{assignmentError}</p>
+                    </div>
+                  )}
+
+                  {assignmentSuccess && (
+                    <div className="success-message">
+                      <p>{assignmentSuccess}</p>
+                    </div>
+                  )}
+
+                  <label>
+                    Task title
+                    <input
+                      type="text"
+                      value={assignmentTitle}
+                      onChange={(e) => setAssignmentTitle(e.target.value)}
+                      required
+                    />
+                  </label>
+
+                  <label>
+                    Description
+                    <textarea
+                      value={assignmentDescription}
+                      onChange={(e) => setAssignmentDescription(e.target.value)}
+                      required
+                    />
+                  </label>
+
+                  <button type="submit" disabled={isAssigningTask}>
+                    {isAssigningTask ? "Assigning..." : "Assign task"}
+                  </button>
+                </form>
               </aside>
             )}
           </div>
