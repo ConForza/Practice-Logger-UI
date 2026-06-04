@@ -1,4 +1,4 @@
-# Practice Tracker UI
+# Practice Logger UI
 
 React frontend for a FastAPI-powered music practice tracking application.
 
