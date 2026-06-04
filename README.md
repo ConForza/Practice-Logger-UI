@@ -1,23 +1,46 @@
-# Practice Logger UI
+# Practice Tracker UI
 
 React frontend for a FastAPI-powered music practice tracking application.
 
-This project is part of a full-stack portfolio app designed for music students and teachers. Students can manage practice tasks, start and end practice sessions, and review session history. The frontend connects to a FastAPI backend with JWT authentication and role-aware user state.
+This project is part of a full-stack portfolio app designed for music students and teachers. Students can manage practice tasks, start and end practice sessions, and review session history. Teachers can view registered students, inspect student practice history, and assign practice tasks.
 
 ## Current features
+
+### Authentication
 
 - Login and registration flow
 - JWT token storage and restore
 - Current user fetch via `/auth/me`
 - Role-based dashboard rendering
+
+### Student features
+
 - Student dashboard with task management
+- Create and delete practice tasks
 - Start and end practice sessions
 - Active practice session restore
 - Session history view
-- Responsive app shell with navbar and sidebar
-- Mobile bottom navigation
+- Helpful empty states for tasks and sessions
+
+### Teacher features
+
+- Teacher dashboard with role-aware navigation
+- Student list fetched from the backend
+- Selected student detail panel
+- Selected student practice session history
+- Refresh and retry states for student/session data
+- Teacher task assignment form
+- Recently assigned task confirmation
+- Form validation and success/error feedback
+
+### Layout and UI
+
+- Responsive app shell
+- Navbar with current role display
+- Sidebar navigation for desktop
+- Bottom navigation on mobile
 - Sidebar view switching
-- Placeholder teacher and admin dashboards
+- Loading and error states
 
 ## Tech stack
 
@@ -31,9 +54,7 @@ This project is part of a full-stack portfolio app designed for music students a
 
 This frontend connects to the Practice Logger FastAPI backend:
 
-```txt
-[Practice Logger Backend] https://github.com/ConForza/Practice-Logger-Backend
-```
+[Practice Logger Backend]https://github.com/ConForza/Practice-Logger-Backend
 
 The backend provides:
 
@@ -82,7 +103,6 @@ For local development, the backend should be available at the URL used by that s
 
 ```txt
 src/
-
 ├── App.jsx
 ├── App.css
 ├── services/
@@ -104,19 +124,21 @@ src/
     │   ├── TaskList.jsx
     │   └── TaskSection.jsx
     └── teacher/
+        ├── StudentList.jsx
+        ├── StudentSessionList.jsx
         └── TeacherDashboard.jsx
 ```
 
 ## Current status
 
-The student dashboard is functional. Teacher and admin dashboards are currently placeholders, with role-aware navigation already in place.
+The student dashboard is functional. Teacher mode now supports viewing students, reviewing selected student practice sessions, and assigning practice tasks. Admin mode currently has placeholder dashboard views, with user-management features planned next.
 
 ## Planned improvements
 
-- Teacher dashboard student list
-- Teacher view of student practice history
-- Teacher task assignment
 - Admin user management
-- Improved loading and error states
+- Role management from the admin dashboard
+- User activation/deactivation
+- Teacher assignment overview
+- Improved automated tests
 - Deployment
 - Screenshots and demo video
