@@ -713,7 +713,7 @@ button:disabled {
 
   .app-shell__main {
     padding: 0.75rem;
-    padding-bottom: 5.5rem;
+    padding-bottom: 6.5rem;
   }
 
   .dashboard-page__header {
@@ -765,10 +765,56 @@ button:disabled {
   .teacher-student-card {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .teacher-student-card h3 {
+    word-break: break-word;
+  }
+
+  .teacher-session-card {
+    padding: 0.85rem;
   }
 
   .teacher-session-card__header {
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .teacher-session-card__header span {
+    align-self: flex-start;
+  }
+
+  .selected-student-panel {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border-left-width: 3px;
+  }
+
+  .selected-student-panel h3 {
+    font-size: 1.05rem;
+    word-break: break-word;
+  }
+
+  .selected-student-panel__actions {
+    margin-top: 0.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .selected-student-panel__actions button {
+    width: 100%;
+  }
+
+  .teacher-assignment-form {
+    margin-top: 1.25rem;
+  }
+
+  .teacher-assignment-form input,
+  .teacher-assignment-form textarea {
+    font-size: 16px;
+  }
+
+  .teacher-assignment-form button {
+    width: 100%;
   }
 }
