@@ -47,6 +47,9 @@ export default function TeacherDashboard({ activeView, token }) {
   const [assignmentSuccess, setAssignmentSuccess] = useState("");
   const [recentlyAssignedTask, setRecentlyAssignedTask] = useState(null);
 
+  const isAssignmentFormValid =
+    assignmentTitle.trim().length > 0 &&
+    assignmentDescription.trim().length > 0;
   const viewCopy = TEACHER_VIEW_COPY[activeView] || TEACHER_VIEW_COPY.dashboard;
 
   async function fetchStudents() {
@@ -84,6 +87,11 @@ export default function TeacherDashboard({ activeView, token }) {
 
     if (!selectedStudent) return;
 
+    if (!isAssignmentFormValid) {
+      setAssignmentError("Please enter a task title and description.");
+      return;
+    }
+
     setIsAssigningTask(true);
     setAssignmentError("");
     setAssignmentSuccess("");
@@ -93,8 +101,8 @@ export default function TeacherDashboard({ activeView, token }) {
         token,
         selectedStudent.id,
         {
-          title: assignmentTitle,
-          description: assignmentDescription,
+          title: assignmentTitle.trim(),
+          description: assignmentDescription.trim(),
         },
       );
 
@@ -258,6 +266,10 @@ export default function TeacherDashboard({ activeView, token }) {
                 >
                   <h4>Assign a practice task</h4>
 
+                  <p className="teacher-assignment-form__helper">
+                    This task will appear in the selected student's task list.
+                  </p>
+
                   {assignmentError && (
                     <div className="empty-state">
                       <h3>Could not assign task</h3>
@@ -277,7 +289,11 @@ export default function TeacherDashboard({ activeView, token }) {
                     <input
                       type="text"
                       value={assignmentTitle}
-                      onChange={(e) => setAssignmentTitle(e.target.value)}
+                      onChange={(e) => {
+                        setAssignmentTitle(e.target.value);
+                        setAssignmentError("");
+                        setAssignmentSuccess("");
+                      }}
                       required
                     />
                   </label>
@@ -286,12 +302,19 @@ export default function TeacherDashboard({ activeView, token }) {
                     Description
                     <textarea
                       value={assignmentDescription}
-                      onChange={(e) => setAssignmentDescription(e.target.value)}
+                      onChange={(e) => {
+                        setAssignmentDescription(e.target.value);
+                        setAssignmentError("");
+                        setAssignmentSuccess("");
+                      }}
                       required
                     />
                   </label>
 
-                  <button type="submit" disabled={isAssigningTask}>
+                  <button
+                    type="submit"
+                    disabled={isAssigningTask || !isAssignmentFormValid}
+                  >
                     {isAssigningTask ? "Assigning..." : "Assign task"}
                   </button>
                 </form>

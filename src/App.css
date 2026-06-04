@@ -617,6 +617,12 @@ button:disabled {
   resize: vertical;
 }
 
+.teacher-assignment-form__helper {
+  margin: -0.5rem 0 1rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
 .success-message {
   margin-bottom: 1rem;
   padding: 0.85rem 1rem;
