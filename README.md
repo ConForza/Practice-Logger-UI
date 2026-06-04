@@ -54,7 +54,7 @@ This project is part of a full-stack portfolio app designed for music students a
 
 This frontend connects to the Practice Logger FastAPI backend:
 
-[Practice Logger Backend]https://github.com/ConForza/Practice-Logger-Backend
+[Practice Logger Backend](https://github.com/ConForza/Practice-Logger-Backend)
 
 The backend provides:
 
