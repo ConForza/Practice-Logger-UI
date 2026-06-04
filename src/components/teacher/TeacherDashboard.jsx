@@ -45,6 +45,7 @@ export default function TeacherDashboard({ activeView, token }) {
   const [isAssigningTask, setIsAssigningTask] = useState(false);
   const [assignmentError, setAssignmentError] = useState("");
   const [assignmentSuccess, setAssignmentSuccess] = useState("");
+  const [recentlyAssignedTask, setRecentlyAssignedTask] = useState(null);
 
   const viewCopy = TEACHER_VIEW_COPY[activeView] || TEACHER_VIEW_COPY.dashboard;
 
@@ -97,6 +98,7 @@ export default function TeacherDashboard({ activeView, token }) {
         },
       );
 
+      setRecentlyAssignedTask(assignedTask);
       setAssignmentTitle("");
       setAssignmentDescription("");
       setAssignmentSuccess(
@@ -121,6 +123,7 @@ export default function TeacherDashboard({ activeView, token }) {
     setAssignmentDescription("");
     setAssignmentError("");
     setAssignmentSuccess("");
+    setRecentlyAssignedTask(null);
 
     if (!selectedStudent) {
       setSelectedStudentSessions([]);
@@ -228,6 +231,25 @@ export default function TeacherDashboard({ activeView, token }) {
 
                     <StudentSessionList sessions={selectedStudentSessions} />
                   </>
+                )}
+
+                {recentlyAssignedTask && (
+                  <div className="recently-assigned-card">
+                    <p className="recently-assigned-card__eyebrow">
+                      Recently assigned
+                    </p>
+                    <h4>{recentlyAssignedTask.title}</h4>
+
+                    {recentlyAssignedTask.description && (
+                      <p>{recentlyAssignedTask.description}</p>
+                    )}
+
+                    {recentlyAssignedTask.status && (
+                      <span className="status-badge status-pending">
+                        {recentlyAssignedTask.status}
+                      </span>
+                    )}
+                  </div>
                 )}
 
                 <form
