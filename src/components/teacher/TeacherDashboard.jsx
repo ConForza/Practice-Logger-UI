@@ -11,23 +11,23 @@ const TEACHER_VIEW_COPY = {
   dashboard: {
     title: "Teacher Dashboard",
     description: "Review student progress and assign practice work.",
-    cardTitle: "Teacher features coming soon",
+    cardTitle: "Teacher overview",
     cardText:
-      "Soon you will be able to view students, inspect practice history, and assign tasks.",
+      "Use the Students view to review practice history and assign tasks. The Assignments view will later provide a wider overview of assigned work.",
   },
   students: {
     title: "Students",
-    description: "View registered student users.",
-    cardTitle: "Student list",
+    description: "View students, review practice history, and assign tasks.",
+    cardTitle: "Student management",
     cardText:
-      "These are the student accounts currently available to your teacher dashboard.",
+      "Select a student to review their completed practice sessions and assign new practice tasks.",
   },
   assignments: {
     title: "Assignments",
-    description: "Create and review assigned practice tasks.",
-    cardTitle: "Assignments coming soon",
+    description: "Review and manage assigned practice work.",
+    cardTitle: "Assignments overview coming soon",
     cardText:
-      "This view will let you assign practice work to selected students.",
+      "This view will eventually show assigned tasks across all students, including pending, in-progress, and completed work.",
   },
 };
 
