@@ -99,7 +99,9 @@ export default function TeacherDashboard({ activeView, token }) {
 
       setAssignmentTitle("");
       setAssignmentDescription("");
-      setAssignmentSuccess(`Assigned task: ${assignedTask.title}`);
+      setAssignmentSuccess(
+        `Task assigned successfully. "${assignedTask.title}" will now appear in ${selectedStudent.email}'s task list.`,
+      );
     } catch (err) {
       setAssignmentError(err.message);
     } finally {
@@ -243,6 +245,7 @@ export default function TeacherDashboard({ activeView, token }) {
 
                   {assignmentSuccess && (
                     <div className="success-message">
+                      <h5>Task assigned</h5>
                       <p>{assignmentSuccess}</p>
                     </div>
                   )}
