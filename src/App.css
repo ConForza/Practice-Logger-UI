@@ -667,6 +667,33 @@ button:disabled {
   color: #555;
 }
 
+.admin-user-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.admin-user-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.admin-user-card h3 {
+  margin: 0 0 0.35rem;
+}
+
+.admin-user-card p {
+  margin: 0;
+  color: #555;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;
@@ -816,5 +843,10 @@ button:disabled {
 
   .teacher-assignment-form button {
     width: 100%;
+  }
+
+  .admin-user-card {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

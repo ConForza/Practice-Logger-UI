@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAdminUsers } from "../../services/api";
+import UserList from "./UserList";
 
 const ADMIN_VIEW_COPY = {
   dashboard: {
@@ -12,9 +13,9 @@ const ADMIN_VIEW_COPY = {
   users: {
     title: "Users",
     description: "View and manage user accounts.",
-    cardTitle: "User management coming soon",
+    cardTitle: "User accounts",
     cardText:
-      "This view will let admins review users and update account details.",
+      "Review registered users and check their current role and account status.",
   },
   settings: {
     title: "Settings",
@@ -89,10 +90,7 @@ export default function AdminDashboard({ activeView, token }) {
                 </button>
               </div>
             )}
-
-            {!isLoadingUsers && !usersError && (
-              <pre>{JSON.stringify(users, null, 2)}</pre>
-            )}
+            {!isLoadingUsers && !usersError && <UserList users={users} />}
           </>
         )}
       </section>
