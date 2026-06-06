@@ -51,7 +51,7 @@ export async function login(email, password) {
 export async function getCurrentUser(token) {
   const response = await fetch(`${API_BASE_URL}/auth/me`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: getAuthHeader(token),
     },
   });
 
@@ -196,7 +196,7 @@ export async function deleteSession(token, sessionId) {
 export async function getTeacherStudents(token) {
   const response = await fetch(`${API_BASE_URL}/teacher/students`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: getAuthHeader(token),
     },
   });
 
@@ -212,7 +212,7 @@ export async function getTeacherStudentSessions(token, studentId) {
     `${API_BASE_URL}/teacher/students/${studentId}/sessions`,
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: getAuthHeader(token),
       },
     },
   );
@@ -231,7 +231,7 @@ export async function assignTaskToStudent(token, studentId, taskData) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: getAuthHeader(token),
       },
       body: JSON.stringify(taskData),
     },
@@ -239,6 +239,20 @@ export async function assignTaskToStudent(token, studentId, taskData) {
 
   if (!response.ok) {
     await handleApiError(response, "Failed to create task");
+  }
+
+  return response.json();
+}
+
+export async function getAdminUsers(token) {
+  const response = await fetch(`${API_BASE_URL}/admin/users`, {
+    headers: {
+      Authorization: getAuthHeader(token),
+    },
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to fetch users");
   }
 
   return response.json();
