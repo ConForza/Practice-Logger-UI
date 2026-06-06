@@ -50,9 +50,7 @@ export async function login(email, password) {
 
 export async function getCurrentUser(token) {
   const response = await fetch(`${API_BASE_URL}/auth/me`, {
-    headers: {
-      Authorization: getAuthHeader(token),
-    },
+    headers: getAuthHeader(token),
   });
 
   if (!response.ok) {
@@ -195,9 +193,7 @@ export async function deleteSession(token, sessionId) {
 
 export async function getTeacherStudents(token) {
   const response = await fetch(`${API_BASE_URL}/teacher/students`, {
-    headers: {
-      Authorization: getAuthHeader(token),
-    },
+    headers: getAuthHeader(token),
   });
 
   if (!response.ok) {
@@ -246,9 +242,7 @@ export async function assignTaskToStudent(token, studentId, taskData) {
 
 export async function getAdminUsers(token) {
   const response = await fetch(`${API_BASE_URL}/admin/users`, {
-    headers: {
-      Authorization: getAuthHeader(token),
-    },
+    headers: getAuthHeader(token),
   });
 
   if (!response.ok) {

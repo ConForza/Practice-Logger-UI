@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { getAdminUsers } from "../../services/api";
+
 const ADMIN_VIEW_COPY = {
   dashboard: {
     title: "Admin Dashboard",
@@ -21,8 +24,34 @@ const ADMIN_VIEW_COPY = {
   },
 };
 
-export default function AdminDashboard({ activeView }) {
+export default function AdminDashboard({ activeView, token }) {
+  const [users, setUsers] = useState([]);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [usersError, setUsersError] = useState("");
+
   const viewCopy = ADMIN_VIEW_COPY[activeView] || ADMIN_VIEW_COPY.dashboard;
+
+  async function fetchUsers() {
+    if (!token) return;
+
+    setIsLoadingUsers(true);
+    setUsersError("");
+
+    try {
+      const usersData = await getAdminUsers(token);
+      setUsers(usersData);
+    } catch (err) {
+      setUsersError(err.message);
+    } finally {
+      setIsLoadingUsers(false);
+    }
+  }
+
+  useEffect(() => {
+    if (activeView !== "users") return;
+
+    fetchUsers();
+  }, [activeView, token]);
 
   return (
     <div className="dashboard-page admin-dashboard">
@@ -36,6 +65,36 @@ export default function AdminDashboard({ activeView }) {
       <section className="dashboard-card">
         <h3>{viewCopy.cardTitle}</h3>
         <p>{viewCopy.cardText}</p>
+
+        {activeView === "users" && (
+          <>
+            <button
+              type="button"
+              onClick={fetchUsers}
+              disabled={isLoadingUsers}
+            >
+              {isLoadingUsers ? "Refreshing..." : "Refresh users"}
+            </button>
+
+            {isLoadingUsers && (
+              <p className="loading-message">Loading users...</p>
+            )}
+
+            {usersError && (
+              <div className="empty-state">
+                <h3>Could not load users</h3>
+                <p>{usersError}</p>
+                <button type="button" onClick={fetchUsers}>
+                  Try again
+                </button>
+              </div>
+            )}
+
+            {!isLoadingUsers && !usersError && (
+              <pre>{JSON.stringify(users, null, 2)}</pre>
+            )}
+          </>
+        )}
       </section>
     </div>
   );
