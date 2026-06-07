@@ -268,3 +268,20 @@ export async function updateUserRole(token, userId, role) {
 
   return response.json();
 }
+
+export async function updateUserStatus(token, userId, isActive) {
+  const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/status`, {
+    method: "PATCH",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ is_active: isActive }),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to update user status");
+  }
+
+  return response.json();
+}
