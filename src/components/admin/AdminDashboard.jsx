@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAdminUsers } from "../../services/api";
+import { getAdminUsers, updateUserRole } from "../../services/api";
 import UserList from "./UserList";
 
 const ADMIN_VIEW_COPY = {
@@ -29,6 +29,9 @@ export default function AdminDashboard({ activeView, token }) {
   const [users, setUsers] = useState([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [usersError, setUsersError] = useState("");
+  const [updatingUserId, setUpdatingUserId] = useState(null);
+  const [roleUpdateError, setRoleUpdateError] = useState("");
+  const [roleUpdateSuccess, setRoleUpdateSuccess] = useState("");
 
   const viewCopy = ADMIN_VIEW_COPY[activeView] || ADMIN_VIEW_COPY.dashboard;
 
@@ -45,6 +48,30 @@ export default function AdminDashboard({ activeView, token }) {
       setUsersError(err.message);
     } finally {
       setIsLoadingUsers(false);
+    }
+  }
+
+  async function handleRoleChange(userId, newRole) {
+    setUpdatingUserId(userId);
+    setRoleUpdateError("");
+    setRoleUpdateSuccess("");
+
+    try {
+      const updatedUser = await updateUserRole(token, userId, newRole);
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user,
+        ),
+      );
+
+      setRoleUpdateSuccess(
+        `Updated ${updatedUser.email} to ${updatedUser.role}.`,
+      );
+    } catch (err) {
+      setRoleUpdateError(err.message);
+    } finally {
+      setUpdatingUserId(null);
     }
   }
 
@@ -90,7 +117,28 @@ export default function AdminDashboard({ activeView, token }) {
                 </button>
               </div>
             )}
-            {!isLoadingUsers && !usersError && <UserList users={users} />}
+
+            {roleUpdateError && (
+              <div className="empty-state">
+                <h3>Could not update role</h3>
+                <p>{roleUpdateError}</p>
+              </div>
+            )}
+
+            {roleUpdateSuccess && (
+              <div className="success-message">
+                <h5>Role updated</h5>
+                <p>{roleUpdateSuccess}</p>
+              </div>
+            )}
+
+            {!isLoadingUsers && !usersError && (
+              <UserList
+                users={users}
+                updatingUserId={updatingUserId}
+                onRoleChange={handleRoleChange}
+              />
+            )}
           </>
         )}
       </section>
