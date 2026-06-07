@@ -251,3 +251,20 @@ export async function getAdminUsers(token) {
 
   return response.json();
 }
+
+export async function updateUserRole(token, userId, role) {
+  const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/role`, {
+    method: "PATCH",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ role }),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to update user role");
+  }
+
+  return response.json();
+}
