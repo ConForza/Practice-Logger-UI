@@ -712,6 +712,12 @@ button:disabled {
   font: inherit;
 }
 
+.admin-user-card__status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;
@@ -869,6 +875,16 @@ button:disabled {
   }
 
   .admin-user-card__role select {
+    width: 100%;
+  }
+
+  .admin-user-card__status {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-user-card__status button {
     width: 100%;
   }
 }

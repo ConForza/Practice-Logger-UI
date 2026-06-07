@@ -1,4 +1,9 @@
-export default function UserList({ users, updatingUserId, onRoleChange }) {
+export default function UserList({
+  users,
+  updatingUserId,
+  onRoleChange,
+  onStatusChange,
+}) {
   if (users.length === 0) {
     return (
       <div className="empty-state">
@@ -28,15 +33,25 @@ export default function UserList({ users, updatingUserId, onRoleChange }) {
             </label>
           </div>
 
-          <span
-            className={
-              user.is_active
-                ? "status-badge status-completed"
-                : "status-badge status-pending"
-            }
-          >
-            {user.is_active ? "Active" : "Inactive"}
-          </span>
+          <div className="admin-user-card__status">
+            <span
+              className={
+                user.is_active
+                  ? "status-badge status-completed"
+                  : "status-badge status-pending"
+              }
+            >
+              {user.is_active ? "Active" : "Inactive"}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => onStatusChange(user.id, !user.is_active)}
+              disabled={updatingUserId === user.id}
+            >
+              {user.is_active ? "Deactivate" : "Reactivate"}
+            </button>
+          </div>
         </li>
       ))}
     </ul>

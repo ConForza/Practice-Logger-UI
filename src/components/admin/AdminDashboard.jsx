@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getAdminUsers, updateUserRole } from "../../services/api";
+import {
+  getAdminUsers,
+  updateUserRole,
+  updateUserStatus,
+} from "../../services/api";
 import UserList from "./UserList";
 
 const ADMIN_VIEW_COPY = {
@@ -32,6 +36,8 @@ export default function AdminDashboard({ activeView, token }) {
   const [updatingUserId, setUpdatingUserId] = useState(null);
   const [roleUpdateError, setRoleUpdateError] = useState("");
   const [roleUpdateSuccess, setRoleUpdateSuccess] = useState("");
+  const [statusUpdateError, setStatusUpdateError] = useState("");
+  const [statusUpdateSuccess, setStatusUpdateSuccess] = useState("");
 
   const viewCopy = ADMIN_VIEW_COPY[activeView] || ADMIN_VIEW_COPY.dashboard;
 
@@ -70,6 +76,34 @@ export default function AdminDashboard({ activeView, token }) {
       );
     } catch (err) {
       setRoleUpdateError(err.message);
+    } finally {
+      setUpdatingUserId(null);
+    }
+  }
+
+  async function handleStatusChange(userId, isActive) {
+    setUpdatingUserId(userId);
+    setStatusUpdateError("");
+    setStatusUpdateSuccess("");
+    setRoleUpdateError("");
+    setRoleUpdateSuccess("");
+
+    try {
+      const updatedUser = await updateUserStatus(token, userId, isActive);
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user,
+        ),
+      );
+
+      setStatusUpdateSuccess(
+        `${updatedUser.email} is now ${
+          updatedUser.is_active ? "active" : "inactive"
+        }.`,
+      );
+    } catch (err) {
+      setStatusUpdateError(err.message);
     } finally {
       setUpdatingUserId(null);
     }
@@ -132,11 +166,26 @@ export default function AdminDashboard({ activeView, token }) {
               </div>
             )}
 
+            {statusUpdateError && (
+              <div className="empty-state">
+                <h3>Could not update status</h3>
+                <p>{statusUpdateError}</p>
+              </div>
+            )}
+
+            {statusUpdateSuccess && (
+              <div className="success-message">
+                <h5>Status updated</h5>
+                <p>{statusUpdateSuccess}</p>
+              </div>
+            )}
+
             {!isLoadingUsers && !usersError && (
               <UserList
                 users={users}
                 updatingUserId={updatingUserId}
                 onRoleChange={handleRoleChange}
+                onStatusChange={handleStatusChange}
               />
             )}
           </>
