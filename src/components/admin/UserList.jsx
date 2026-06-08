@@ -40,6 +40,10 @@ export default function UserList({
                   This is your account. You cannot change your own admin access.
                 </p>
               )}
+
+              {updatingUserId === user.id && (
+                <p className="admin-user-card__updating">Updating...</p>
+              )}
             </div>
 
             <div className="admin-user-card__status">

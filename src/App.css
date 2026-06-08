@@ -729,6 +729,18 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.admin-user-card__updating {
+  margin: 0.65rem 0 0;
+  color: #555;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.dashboard-card > .success-message,
+.dashboard-card > .empty-state {
+  margin-top: 1rem;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;

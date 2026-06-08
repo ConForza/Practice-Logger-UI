@@ -61,6 +61,8 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
     setUpdatingUserId(userId);
     setRoleUpdateError("");
     setRoleUpdateSuccess("");
+    setStatusUpdateError("");
+    setStatusUpdateSuccess("");
 
     try {
       const updatedUser = await updateUserRole(token, userId, newRole);
@@ -72,7 +74,7 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
       );
 
       setRoleUpdateSuccess(
-        `Updated ${updatedUser.email} to ${updatedUser.role}.`,
+        `${updatedUser.email}'s role was updated to ${updatedUser.role}.`,
       );
     } catch (err) {
       setRoleUpdateError(err.message);
@@ -98,8 +100,8 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
       );
 
       setStatusUpdateSuccess(
-        `${updatedUser.email} is now ${
-          updatedUser.is_active ? "active" : "inactive"
+        `${updatedUser.email}'s account was ${
+          updatedUser.is_active ? "reactivated" : "deactivated"
         }.`,
       );
     } catch (err) {
