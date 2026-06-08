@@ -101,7 +101,8 @@ function App() {
     return (
       message === "Could not validate credentials" ||
       message === "Not authenticated" ||
-      message === "Invalid token"
+      message === "Invalid token" ||
+      message === "Account is inactive"
     );
   }
 
@@ -223,10 +224,11 @@ function App() {
     setToken(savedToken);
 
     fetchCurrentUser(savedToken)
-      .catch(() => {
+      .catch((err) => {
         localStorage.removeItem(TOKEN_STORAGE_KEY);
         setToken("");
         setCurrentUser(null);
+        setError(err.message);
       })
       .finally(() => {
         setLoading(false);
