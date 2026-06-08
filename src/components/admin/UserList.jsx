@@ -2,6 +2,7 @@ export default function UserList({
   users,
   currentUser,
   updatingUserId,
+  isUpdatingUser,
   onRoleChange,
   onStatusChange,
 }) {
@@ -18,9 +19,15 @@ export default function UserList({
     <ul className="admin-user-list">
       {users.map((user) => {
         const isCurrentUser = currentUser?.id === user.id;
-
         return (
-          <li key={user.id} className="admin-user-card">
+          <li
+            key={user.id}
+            className={
+              updatingUserId === user.id
+                ? "admin-user-card admin-user-card--updating"
+                : "admin-user-card"
+            }
+          >
             <div>
               <h3>{user.email}</h3>
               <label className="admin-user-card__role">
@@ -28,7 +35,7 @@ export default function UserList({
                 <select
                   value={user.role}
                   onChange={(e) => onRoleChange(user.id, e.target.value)}
-                  disabled={updatingUserId === user.id || isCurrentUser}
+                  disabled={isUpdatingUser || isCurrentUser}
                 >
                   <option value="student">student</option>
                   <option value="teacher">teacher</option>
@@ -42,7 +49,9 @@ export default function UserList({
               )}
 
               {updatingUserId === user.id && (
-                <p className="admin-user-card__updating">Updating...</p>
+                <p className="admin-user-card__updating">
+                  Updating this user...
+                </p>
               )}
             </div>
 
@@ -60,7 +69,7 @@ export default function UserList({
               <button
                 type="button"
                 onClick={() => onStatusChange(user.id, !user.is_active)}
-                disabled={updatingUserId === user.id || isCurrentUser}
+                disabled={isUpdatingUser || isCurrentUser}
               >
                 {user.is_active ? "Deactivate" : "Reactivate"}
               </button>

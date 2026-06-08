@@ -40,6 +40,7 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
   const [statusUpdateSuccess, setStatusUpdateSuccess] = useState("");
 
   const viewCopy = ADMIN_VIEW_COPY[activeView] || ADMIN_VIEW_COPY.dashboard;
+  const isUpdatingUser = updatingUserId !== null;
 
   async function fetchUsers() {
     if (!token) return;
@@ -187,6 +188,7 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
                 users={users}
                 currentUser={currentUser}
                 updatingUserId={updatingUserId}
+                isUpdatingUser={isUpdatingUser}
                 onRoleChange={handleRoleChange}
                 onStatusChange={handleStatusChange}
               />

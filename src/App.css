@@ -741,6 +741,11 @@ button:disabled {
   margin-top: 1rem;
 }
 
+.admin-user-card--updating {
+  border-color: #b8d4ff;
+  background: #f8fbff;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;
