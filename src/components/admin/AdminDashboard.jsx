@@ -29,7 +29,7 @@ const ADMIN_VIEW_COPY = {
   },
 };
 
-export default function AdminDashboard({ activeView, token }) {
+export default function AdminDashboard({ activeView, token, currentUser }) {
   const [users, setUsers] = useState([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [usersError, setUsersError] = useState("");
@@ -183,6 +183,7 @@ export default function AdminDashboard({ activeView, token }) {
             {!isLoadingUsers && !usersError && (
               <UserList
                 users={users}
+                currentUser={currentUser}
                 updatingUserId={updatingUserId}
                 onRoleChange={handleRoleChange}
                 onStatusChange={handleStatusChange}

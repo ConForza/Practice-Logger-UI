@@ -249,7 +249,13 @@ function App() {
         return <TeacherDashboard activeView={activeView} token={token} />;
 
       case "admin":
-        return <AdminDashboard activeView={activeView} token={token} />;
+        return (
+          <AdminDashboard
+            activeView={activeView}
+            token={token}
+            currentUser={currentUser}
+          />
+        );
 
       default:
         return (
