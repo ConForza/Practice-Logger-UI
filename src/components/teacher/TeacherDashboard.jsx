@@ -10,24 +10,24 @@ import StudentSessionList from "./StudentSessionList";
 const TEACHER_VIEW_COPY = {
   dashboard: {
     title: "Teacher Dashboard",
-    description: "Review student progress and assign practice work.",
+    description: "Review student progress and manage practice work.",
     cardTitle: "Teacher overview",
     cardText:
-      "Use the Students view to review practice history and assign tasks. The Assignments view will later provide a wider overview of assigned work.",
+      "Use the Students view to review student practice history and assign new tasks.",
   },
   students: {
     title: "Students",
     description: "View students, review practice history, and assign tasks.",
     cardTitle: "Student management",
     cardText:
-      "Select a student to review their completed practice sessions and assign new practice tasks.",
+      "Select a student to review completed practice sessions and assign practice work.",
   },
   assignments: {
     title: "Assignments",
     description: "Review and manage assigned practice work.",
     cardTitle: "Assignments overview coming soon",
     cardText:
-      "This view will eventually show assigned tasks across all students, including pending, in-progress, and completed work.",
+      "This view will later show assigned tasks across all students, including pending, in-progress, and completed work.",
   },
 };
 

@@ -10,22 +10,23 @@ const ADMIN_VIEW_COPY = {
   dashboard: {
     title: "Admin Dashboard",
     description: "Manage users, roles, and account status.",
-    cardTitle: "Admin features coming soon",
+    cardTitle: "Admin overview",
     cardText:
-      "Soon you will be able to manage users, update roles, and deactivate accounts.",
+      "Use the Users view to review accounts, update roles, and manage account status.",
   },
   users: {
     title: "Users",
     description: "View and manage user accounts.",
     cardTitle: "User accounts",
     cardText:
-      "Review registered users and check their current role and account status.",
+      "Review registered users, update roles, and activate or deactivate accounts.",
   },
   settings: {
     title: "Settings",
     description: "Configure application-level settings.",
     cardTitle: "Settings coming soon",
-    cardText: "This view will eventually contain administrative app settings.",
+    cardText:
+      "This view will later contain account, security, and application settings.",
   },
 };
 
