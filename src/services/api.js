@@ -207,9 +207,7 @@ export async function getTeacherStudentSessions(token, studentId) {
   const response = await fetch(
     `${API_BASE_URL}/teacher/students/${studentId}/sessions`,
     {
-      headers: {
-        Authorization: getAuthHeader(token),
-      },
+      headers: getAuthHeader(token),
     },
   );
 
@@ -226,8 +224,8 @@ export async function assignTaskToStudent(token, studentId, taskData) {
     {
       method: "POST",
       headers: {
+        ...getAuthHeader(token),
         "Content-Type": "application/json",
-        Authorization: getAuthHeader(token),
       },
       body: JSON.stringify(taskData),
     },
