@@ -237,9 +237,13 @@ function App() {
 
   useEffect(() => {
     if (!token) return;
-
     fetchDashboardData(token);
   }, [token]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    setActiveView("dashboard");
+  }, [currentUser?.role]);
 
   function renderDashboard() {
     if (!currentUser) return null;
