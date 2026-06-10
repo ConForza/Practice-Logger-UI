@@ -3,9 +3,11 @@ import {
   assignTaskToStudent,
   getTeacherStudents,
   getTeacherStudentSessions,
+  getWeeklyStudentProgress,
 } from "../../services/api";
 import StudentList from "./StudentList";
 import StudentSessionList from "./StudentSessionList";
+import WeeklyProgressList from "./WeeklyProgressList";
 
 const TEACHER_VIEW_COPY = {
   dashboard: {
@@ -46,6 +48,9 @@ export default function TeacherDashboard({ activeView, token }) {
   const [assignmentError, setAssignmentError] = useState("");
   const [assignmentSuccess, setAssignmentSuccess] = useState("");
   const [recentlyAssignedTask, setRecentlyAssignedTask] = useState(null);
+  const [weeklyProgress, setWeeklyProgress] = useState([]);
+  const [isLoadingWeeklyProgress, setIsLoadingWeeklyProgress] = useState(false);
+  const [weeklyProgressError, setWeeklyProgressError] = useState("");
 
   const isAssignmentFormValid =
     assignmentTitle.trim().length > 0 &&
@@ -119,11 +124,33 @@ export default function TeacherDashboard({ activeView, token }) {
     }
   }
 
+  async function fetchWeeklyProgress() {
+    if (!token) return;
+
+    setIsLoadingWeeklyProgress(true);
+    setWeeklyProgressError("");
+
+    try {
+      const progressData = await getWeeklyStudentProgress(token);
+      setWeeklyProgress(progressData);
+    } catch (err) {
+      setWeeklyProgressError(err.message);
+    } finally {
+      setIsLoadingWeeklyProgress(false);
+    }
+  }
+
   useEffect(() => {
     if (activeView !== "students") return;
     if (!token) return;
 
     fetchStudents();
+  }, [activeView, token]);
+
+  useEffect(() => {
+    if (activeView !== "dashboard") return;
+
+    fetchWeeklyProgress();
   }, [activeView, token]);
 
   useEffect(() => {
@@ -154,6 +181,43 @@ export default function TeacherDashboard({ activeView, token }) {
       <section className="dashboard-card">
         <h3>{viewCopy.cardTitle}</h3>
         <p>{viewCopy.cardText}</p>
+
+        {activeView === "dashboard" && (
+          <div className="weekly-progress-section">
+            <div className="weekly-progress-section__header">
+              <div>
+                <h3>Weekly student progress</h3>
+                <p>Students ranked by completed practice duration this week.</p>
+              </div>
+
+              <button
+                type="button"
+                onClick={fetchWeeklyProgress}
+                disabled={isLoadingWeeklyProgress}
+              >
+                {isLoadingWeeklyProgress ? "Refreshing..." : "Refresh progress"}
+              </button>
+            </div>
+
+            {isLoadingWeeklyProgress && (
+              <p className="loading-message">Loading weekly progress...</p>
+            )}
+
+            {weeklyProgressError && (
+              <div className="empty-state">
+                <h3>Could not load weekly progress</h3>
+                <p>{weeklyProgressError}</p>
+                <button type="button" onClick={fetchWeeklyProgress}>
+                  Try again
+                </button>
+              </div>
+            )}
+
+            {!isLoadingWeeklyProgress && !weeklyProgressError && (
+              <WeeklyProgressList progress={weeklyProgress} />
+            )}
+          </div>
+        )}
 
         {activeView === "students" && (
           <div className="teacher-student-actions">

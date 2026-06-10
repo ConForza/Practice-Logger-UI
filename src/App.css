@@ -746,6 +746,56 @@ button:disabled {
   background: #f8fbff;
 }
 
+.weekly-progress-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eee;
+}
+
+.weekly-progress-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.weekly-progress-section__header h3 {
+  margin: 0 0 0.35rem;
+}
+
+.weekly-progress-section__header p {
+  margin: 0;
+  color: #555;
+}
+
+.weekly-progress-list {
+  padding-left: 1.25rem;
+  margin: 1rem 0 0;
+}
+
+.weekly-progress-card {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.weekly-progress-card h4 {
+  margin: 0 0 0.35rem;
+}
+
+.weekly-progress-card p {
+  margin: 0;
+  color: #555;
+}
+
+.weekly-progress-card strong {
+  display: inline-block;
+  margin-top: 0.75rem;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;
@@ -928,5 +978,13 @@ button:disabled {
   .admin-user-card__updating {
     font-size: 0.9rem;
     line-height: 1.4;
+  }
+
+  .weekly-progress-section__header {
+    flex-direction: column;
+  }
+
+  .weekly-progress-section__header button {
+    width: 100%;
   }
 }
