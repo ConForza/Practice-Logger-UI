@@ -283,3 +283,15 @@ export async function updateUserStatus(token, userId, isActive) {
 
   return response.json();
 }
+
+export async function getWeeklyStudentProgress(token) {
+  const response = await fetch(`${API_BASE_URL}/teacher/progress/weekly`, {
+    headers: getAuthHeader(token),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to fetch weekly progress");
+  }
+
+  return response.json();
+}
