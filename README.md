@@ -4,6 +4,23 @@ React frontend for a FastAPI-powered music practice tracking application.
 
 This project is part of a full-stack portfolio app designed for music students and teachers. Students can manage practice tasks, start and end practice sessions, and review session history. Teachers can view registered students, inspect student practice history, and assign practice tasks.
 
+## Live App
+
+- Live app: https://practice-logger.netlify.app/
+- Backend API: https://practice-logger-backend-production.up.railway.app/
+- API docs: https://practice-logger-backend-production.up.railway.app/docs
+- Backend repo: https://github.com/ConForza/Practice-Logger-Backend
+
+## Tech Stack
+
+- React
+- Vite
+- JavaScript
+- CSS
+- FastAPI backend
+- PostgreSQL database
+- Netlify
+
 ## Current features
 
 ### Authentication
@@ -33,6 +50,13 @@ This project is part of a full-stack portfolio app designed for music students a
 - Recently assigned task confirmation
 - Form validation and success/error feedback
 
+### Admin features
+
+- View user accounts
+- Change user roles
+- Activate and deactivate accounts
+- Protect current admin account from accidental self-demotion or deactivation
+
 ### Layout and UI
 
 - Responsive app shell
@@ -41,14 +65,6 @@ This project is part of a full-stack portfolio app designed for music students a
 - Bottom navigation on mobile
 - Sidebar view switching
 - Loading and error states
-
-## Tech stack
-
-- React
-- Vite
-- JavaScript
-- CSS
-- FastAPI backend integration
 
 ## Related backend
 
@@ -103,42 +119,40 @@ For local development, the backend should be available at the URL used by that s
 
 ```txt
 src/
-├── App.jsx
-├── App.css
+├── components/
+│   ├── admin/
+│   ├── layout/
+│   ├── student/
+│   └── teacher/
 ├── services/
 │   └── api.js
-└── components/
-    ├── LoginForm.jsx
-    ├── admin/
-    │   └── AdminDashboard.jsx
-    ├── layout/
-    │   ├── AppShell.jsx
-    │   ├── Navbar.jsx
-    │   └── Sidebar.jsx
-    ├── student/
-    │   ├── ActiveSessionPanel.jsx
-    │   ├── SessionHistorySection.jsx
-    │   ├── SessionList.jsx
-    │   ├── StudentDashboard.jsx
-    │   ├── TaskForm.jsx
-    │   ├── TaskList.jsx
-    │   └── TaskSection.jsx
-    └── teacher/
-        ├── StudentList.jsx
-        ├── StudentSessionList.jsx
-        └── TeacherDashboard.jsx
+├── App.jsx
+├── App.css
+└── main.jsx
+```
+
+## Environment Variables
+
+Create a .env file in the project root:
+
+```env
+VITE_API_BASE_URL=http://localhost:8000/api/v1
+```
+
+For production on Netlify, this points to the deployed Railway API:
+
+```env
+VITE_API_BASE_URL=https://practice-logger-backend-production.up.railway.app/api/v1
 ```
 
 ## Current status
 
-The student dashboard is functional. Teacher mode now supports viewing students, reviewing selected student practice sessions, and assigning practice tasks. Admin mode currently has placeholder dashboard views, with user-management features planned next.
+The student dashboard is functional. Teacher mode now supports viewing students, reviewing selected student practice sessions, and assigning practice tasks. Admin mode has basic user management features.
 
 ## Planned improvements
 
-- Admin user management
-- Role management from the admin dashboard
-- User activation/deactivation
-- Teacher assignment overview
-- Improved automated tests
-- Deployment
-- Screenshots and demo video
+- PWA support for phone/tablet installation
+- Admin password reset
+- Improved teacher-student relationships
+- Multi-task practice sessions
+- More detailed progress statistics
