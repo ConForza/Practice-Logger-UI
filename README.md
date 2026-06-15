@@ -21,6 +21,24 @@ This project is part of a full-stack portfolio app designed for music students a
 - PostgreSQL database
 - Netlify
 
+## Screenshots
+
+### Student dashboard
+
+![Student dashboard showing practice tasks and session tracking](docs/screenshots/student-dashboard.png)
+
+### Teacher dashboard
+
+![Teacher dashboard showing weekly progress](docs/screenshots/teacher-dashboard.png)
+
+### Teacher student panel
+
+![Teacher panel showing student list](docs/screenshots/teacher-students.png)
+
+### Admin users panel
+
+![Admin users panel showing role and account management](docs/screenshots/admin-users.png)
+
 ## Current features
 
 ### Authentication
