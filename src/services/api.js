@@ -301,19 +301,16 @@ export async function getWeeklyStudentProgress(token) {
 }
 
 export async function resetUserPassword(token, userId, newPassword) {
-  const response = await fetch(
-    `${API_BASE_URL}/admin/users/${userId}/password`,
-    {
-      method: "PATCH",
-      headers: {
-        ...getAuthHeader(token),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        new_password: newPassword,
-      }),
+  const response = await fetch(`${API_BASE_URL}/users/${userId}/password`, {
+    method: "PATCH",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      new_password: newPassword,
+    }),
+  });
 
   if (!response.ok) {
     await handleApiError(response, "Failed to reset password");
