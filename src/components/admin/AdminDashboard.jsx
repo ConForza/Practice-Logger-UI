@@ -3,6 +3,7 @@ import {
   getAdminUsers,
   updateUserRole,
   updateUserStatus,
+  resetUserPassword,
 } from "../../services/api";
 import UserList from "./UserList";
 
@@ -39,9 +40,14 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
   const [roleUpdateSuccess, setRoleUpdateSuccess] = useState("");
   const [statusUpdateError, setStatusUpdateError] = useState("");
   const [statusUpdateSuccess, setStatusUpdateSuccess] = useState("");
+  const [passwordInputs, setPasswordInputs] = useState({});
+  const [passwordUpdateError, setPasswordUpdateError] = useState("");
+  const [passwordUpdateSuccess, setPasswordUpdateSuccess] = useState("");
+  const [updatingPasswordUserId, setUpdatingPasswordUserId] = useState(null);
 
   const viewCopy = ADMIN_VIEW_COPY[activeView] || ADMIN_VIEW_COPY.dashboard;
   const isUpdatingUser = updatingUserId !== null;
+  const isUpdatingPassword = updatingPasswordUserId !== null;
 
   async function fetchUsers() {
     if (!token) return;
@@ -110,6 +116,50 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
       setStatusUpdateError(err.message);
     } finally {
       setUpdatingUserId(null);
+    }
+  }
+
+  async function handlePasswordInputChange(userId, newPassword) {
+    setPasswordInputs((prevInputs) => ({
+      ...prevInputs,
+      [userId]: newPassword,
+    }));
+  }
+
+  async function handlePasswordReset(userId) {
+    const newPassword = passwordInputs[userId] || "";
+
+    setPasswordUpdateError("");
+    setPasswordUpdateSuccess("");
+    setRoleUpdateError("");
+    setRoleUpdateSuccess("");
+    setStatusUpdateError("");
+    setStatusUpdateSuccess("");
+
+    if (newPassword.length < 8) {
+      setPasswordUpdateError("Password must be at least 8 characters.");
+      return;
+    }
+
+    setUpdatingPasswordUserId(userId);
+
+    try {
+      await resetUserPassword(token, userId, newPassword);
+
+      const updatedUser = users.find((user) => user.id === userId);
+
+      setPasswordInputs((prevInputs) => ({
+        ...prevInputs,
+        [userId]: "",
+      }));
+
+      setPasswordUpdateSuccess(
+        `${updatedUser?.email || "User"}'s password was reset successfully.`,
+      );
+    } catch (err) {
+      setPasswordUpdateError(err.message);
+    } finally {
+      setUpdatingPasswordUserId(null);
     }
   }
 
@@ -184,6 +234,20 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
               </div>
             )}
 
+            {passwordUpdateError && (
+              <div className="empty-state">
+                <h3>Could not reset password</h3>
+                <p>{passwordUpdateError}</p>
+              </div>
+            )}
+
+            {passwordUpdateSuccess && (
+              <div className="success-message">
+                <h5>Password reset</h5>
+                <p>{passwordUpdateSuccess}</p>
+              </div>
+            )}
+
             {!isLoadingUsers && !usersError && (
               <UserList
                 users={users}
@@ -192,6 +256,11 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
                 isUpdatingUser={isUpdatingUser}
                 onRoleChange={handleRoleChange}
                 onStatusChange={handleStatusChange}
+                passwordInputs={passwordInputs}
+                updatingPasswordUserId={updatingPasswordUserId}
+                isUpdatingPassword={isUpdatingPassword}
+                onPasswordInputChange={handlePasswordInputChange}
+                onPasswordReset={handlePasswordReset}
               />
             )}
           </>

@@ -796,6 +796,33 @@ button:disabled {
   margin-top: 0.75rem;
 }
 
+.admin-user-card__password-reset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+
+.admin-user-card__password-reset label {
+  font-weight: 600;
+}
+
+.admin-user-card__password-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-user-card__password-controls input {
+  min-width: 180px;
+  max-width: 240px;
+}
+
+.admin-user-card__password-controls button {
+  white-space: nowrap;
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding-right: 1.25rem;
@@ -986,5 +1013,15 @@ button:disabled {
 
   .weekly-progress-section__header button {
     width: 100%;
+  }
+
+  .admin-user-card__password-controls {
+    align-items: stretch;
+  }
+
+  .admin-user-card__password-controls input,
+  .admin-user-card__password-controls button {
+    width: 100%;
+    max-width: none;
   }
 }

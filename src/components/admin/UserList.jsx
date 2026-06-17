@@ -5,6 +5,11 @@ export default function UserList({
   isUpdatingUser,
   onRoleChange,
   onStatusChange,
+  passwordInputs,
+  updatingPasswordUserId,
+  isUpdatingPassword,
+  onPasswordInputChange,
+  onPasswordReset,
 }) {
   if (users.length === 0) {
     return (
@@ -19,6 +24,7 @@ export default function UserList({
     <ul className="admin-user-list">
       {users.map((user) => {
         const isCurrentUser = currentUser?.id === user.id;
+        const isPasswordUpdating = updatingPasswordUserId === user.id;
         return (
           <li
             key={user.id}
@@ -47,6 +53,33 @@ export default function UserList({
                   This is your account. You cannot change your own admin access.
                 </p>
               )}
+
+              <div className="admin-user-card__password-reset">
+                <label htmlFor={`password-reset-${user.id}`}>
+                  Reset password
+                </label>
+
+                <div className="admin-user-card__password-controls">
+                  <input
+                    id={`password-reset-${user.id}`}
+                    type="password"
+                    value={passwordInputs[user.id] || ""}
+                    onChange={(e) =>
+                      onPasswordInputChange(user.id, e.target.value)
+                    }
+                    placeholder="New password"
+                    disabled={isUpdatingPassword}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => onPasswordReset(user.id)}
+                    disabled={isUpdatingPassword}
+                  >
+                    {isPasswordUpdating ? "Resetting..." : "Reset"}
+                  </button>
+                </div>
+              </div>
 
               {updatingUserId === user.id && (
                 <p className="admin-user-card__updating">
