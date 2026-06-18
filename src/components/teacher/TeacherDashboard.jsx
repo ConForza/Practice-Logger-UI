@@ -8,6 +8,7 @@ import {
 import StudentList from "./StudentList";
 import StudentSessionList from "./StudentSessionList";
 import WeeklyProgressList from "./WeeklyProgressList";
+import AccountSettings from "../account/AccountSettings";
 
 const TEACHER_VIEW_COPY = {
   dashboard: {
