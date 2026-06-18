@@ -4,9 +4,9 @@ import {
   updateUserRole,
   updateUserStatus,
   resetUserPassword,
-  accountSettings,
 } from "../../services/api";
 import UserList from "./UserList";
+import AccountSettings from "../account/AccountSettings";
 
 const ADMIN_VIEW_COPY = {
   dashboard: {
