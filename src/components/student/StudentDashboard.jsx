@@ -15,6 +15,10 @@ const STUDENT_VIEW_COPY = {
     title: "Practice Sessions",
     description: "Review your completed practice sessions.",
   },
+  settings: {
+    title: "Account Settings",
+    description: "Manage your account settings.",
+  },
 };
 
 export default function StudentDashboard({
@@ -85,6 +89,8 @@ export default function StudentDashboard({
       {activeView === "sessions" && (
         <SessionHistorySection sessions={sessions} />
       )}
+
+      {activeView === "settings" && <AccountSettings token={token} />}
     </div>
   );
 }

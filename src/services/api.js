@@ -318,3 +318,27 @@ export async function resetUserPassword(token, userId, newPassword) {
 
   return response.json();
 }
+
+export async function changeCurrentUserPassword(
+  token,
+  currentPassword,
+  newPassword,
+) {
+  const response = await fetch(`${API_BASE_URL}/users/me/password`, {
+    method: "PATCH",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      current_password: currentPassword,
+      new_password: newPassword,
+    }),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to change password");
+  }
+
+  return response.json();
+}

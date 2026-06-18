@@ -25,9 +25,8 @@ const ADMIN_VIEW_COPY = {
   settings: {
     title: "Settings",
     description: "Configure application-level settings.",
-    cardTitle: "Settings coming soon",
-    cardText:
-      "This view will later contain account, security, and application settings.",
+    cardTitle: "Settings",
+    cardText: "Manage account, security, and application settings.",
   },
 };
 
@@ -265,6 +264,7 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
             )}
           </>
         )}
+        {activeView === "settings" && <AccountSettings token={token} />}
       </section>
     </div>
   );

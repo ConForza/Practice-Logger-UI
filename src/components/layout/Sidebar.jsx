@@ -3,6 +3,7 @@ const NAV_ITEMS_BY_ROLE = {
     { label: "Dashboard", value: "dashboard" },
     { label: "Tasks", value: "tasks" },
     { label: "Sessions", value: "sessions" },
+    { label: "Settings", value: "settings" },
   ],
   teacher: [
     { label: "Dashboard", value: "dashboard" },
