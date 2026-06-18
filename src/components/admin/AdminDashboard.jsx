@@ -4,6 +4,7 @@ import {
   updateUserRole,
   updateUserStatus,
   resetUserPassword,
+  accountSettings,
 } from "../../services/api";
 import UserList from "./UserList";
 

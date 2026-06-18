@@ -1,6 +1,7 @@
 import TaskSection from "./TaskSection";
 import SessionHistorySection from "./SessionHistorySection";
 import ActiveSessionPanel from "./ActiveSessionPanel";
+import AccountSettings from "../settings/AccountSettings";
 
 const STUDENT_VIEW_COPY = {
   dashboard: {
