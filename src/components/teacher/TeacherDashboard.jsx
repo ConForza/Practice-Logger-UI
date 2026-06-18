@@ -27,9 +27,15 @@ const TEACHER_VIEW_COPY = {
   assignments: {
     title: "Assignments",
     description: "Review and manage assigned practice work.",
-    cardTitle: "Assignments overview coming soon",
+    cardTitle: "Assignments",
     cardText:
-      "This view will later show assigned tasks across all students, including pending, in-progress, and completed work.",
+      "Review assigned practice tasks, their status, and manage task details.",
+  },
+  settings: {
+    title: "Settings",
+    description: "Configure your account and application settings.",
+    cardTitle: "Settings",
+    cardText: "Manage your account, security, and application settings.",
   },
 };
 
@@ -386,6 +392,7 @@ export default function TeacherDashboard({ activeView, token }) {
             )}
           </div>
         )}
+        {activeView === "settings" && <AccountSettings token={token} />}
       </section>
     </div>
   );
