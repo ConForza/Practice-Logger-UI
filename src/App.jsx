@@ -278,6 +278,7 @@ function App() {
             onSessionNotesChange={(e) => setSessionNotes(e.target.value)}
             onDeleteTask={handleDeleteTask}
             onStartSession={handleStartSession}
+            token={token}
           />
         );
     }

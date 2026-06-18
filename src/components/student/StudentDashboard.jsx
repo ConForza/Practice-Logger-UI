@@ -37,6 +37,7 @@ export default function StudentDashboard({
   onSessionNotesChange,
   onDeleteTask,
   onStartSession,
+  token,
 }) {
   const viewCopy = STUDENT_VIEW_COPY[activeView] || STUDENT_VIEW_COPY.dashboard;
 
