@@ -646,6 +646,26 @@ button:disabled {
   font-size: 0.95rem;
 }
 
+.teacher-assignment-form button {
+  background: #007bff;
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.teacher-assignment-form button:hover:not(:disabled) {
+  background: #0069d9;
+}
+
+.teacher-assignment-form button:disabled {
+  background: #007bff;
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  opacity: 0.65;
+}
+
 .success-message {
   margin-bottom: 1rem;
   padding: 0.85rem 1rem;
@@ -858,6 +878,26 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+}
+
+.change-password-form button[type="submit"] {
+  background: #007bff;
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.change-password-form button[type="submit"]:hover:not(:disabled) {
+  background: #0069d9;
+}
+
+.change-password-form button[type="submit"]:disabled {
+  background: #007bff;
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  opacity: 0.65;
 }
 
 .account-settings {
