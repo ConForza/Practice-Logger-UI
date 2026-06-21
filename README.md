@@ -11,6 +11,10 @@ This project is part of a full-stack portfolio app designed for music students a
 - API docs: https://practice-logger-backend-production.up.railway.app/docs
 - Backend repo: https://github.com/ConForza/Practice-Logger-Backend
 
+## PWA Support
+
+Practice Logger can be installed as a Progressive Web App, allowing students and teachers to launch it from a phone or tablet home screen.
+
 ## Tech Stack
 
 - React
@@ -169,8 +173,8 @@ The student dashboard is functional. Teacher mode now supports viewing students,
 
 ## Planned improvements
 
-- PWA support for phone/tablet installation
-- Admin password reset
 - Improved teacher-student relationships
 - Multi-task practice sessions
 - More detailed progress statistics
+- Persistent login / refresh tokens
+- Assignment overview
