@@ -7,6 +7,11 @@ export default function TeacherAssignments({ token }) {
   const [isLoading, setIsLoading] = useState(false);
   const [assignmentsError, setAssignmentsError] = useState("");
 
+  function getUserEmail(userId) {
+    const user = users.find((user) => user.id === userId);
+    return user?.email || "Unknown user";
+  }
+
   async function fetchAssignmentData() {
     if (!token) return;
 
@@ -68,6 +73,25 @@ export default function TeacherAssignments({ token }) {
           </div>
         </>
       )}
+      <div className="teacher-assignments__list">
+        <h4>Current assignments</h4>
+
+        {links.length === 0 ? (
+          <p>No teacher-student assignments have been created yet.</p>
+        ) : (
+          <ul className="admin-user-list">
+            {links.map((link) => (
+              <li key={link.id} className="admin-user-card">
+                <div>
+                  <h3>{getUserEmail(link.teacher_id)}</h3>
+                  <p>can view and support</p>
+                  <h3>{getUserEmail(link.student_id)}</h3>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
