@@ -6,6 +6,7 @@ import {
   resetUserPassword,
 } from "../../services/api";
 import UserList from "./UserList";
+import TeacherAssignments from "./TeacherAssignments";
 import AccountSettings from "../account/AccountSettings";
 
 const ADMIN_VIEW_COPY = {
@@ -22,6 +23,12 @@ const ADMIN_VIEW_COPY = {
     cardTitle: "User accounts",
     cardText:
       "Review registered users, update roles, and activate or deactivate accounts.",
+  },
+  "teacher-assignments": {
+    title: "Teacher Assignments",
+    description: "Manage which students are assigned to each teacher.",
+    cardTitle: "Teacher Assignments",
+    cardText: "Manage which students each teacher can view and support.",
   },
   settings: {
     title: "Settings",
@@ -265,6 +272,9 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
             )}
           </>
         )}
+
+        {activeView === "teacher-assignments" && <TeacherAssignments />}
+
         {activeView === "settings" && <AccountSettings token={token} />}
       </section>
     </div>

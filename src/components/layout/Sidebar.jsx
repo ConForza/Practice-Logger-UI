@@ -14,6 +14,7 @@ const NAV_ITEMS_BY_ROLE = {
   admin: [
     { label: "Dashboard", value: "dashboard" },
     { label: "Users", value: "users" },
+    { label: "Teacher Assignments", value: "teacher-assignments" },
     { label: "Settings", value: "settings" },
   ],
 };
