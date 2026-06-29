@@ -273,7 +273,9 @@ export default function AdminDashboard({ activeView, token, currentUser }) {
           </>
         )}
 
-        {activeView === "teacher-assignments" && <TeacherAssignments />}
+        {activeView === "teacher-assignments" && (
+          <TeacherAssignments token={token} />
+        )}
 
         {activeView === "settings" && <AccountSettings token={token} />}
       </section>

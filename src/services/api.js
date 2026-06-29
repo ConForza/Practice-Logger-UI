@@ -342,3 +342,52 @@ export async function changeCurrentUserPassword(
 
   return response.json();
 }
+
+export async function getTeacherStudentLinks(token) {
+  const response = await fetch(`${API_BASE_URL}/admin/teacher-student-links`, {
+    headers: getAuthHeader(token),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to fetch teacher assignments");
+  }
+
+  return response.json();
+}
+
+export async function createTeacherStudentLink(token, teacherId, studentId) {
+  const response = await fetch(`${API_BASE_URL}/admin/teacher-student-links`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      teacher_id: teacherId,
+      student_id: studentId,
+      instrument: "General",
+    }),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to create teacher assignment");
+  }
+
+  return response.json();
+}
+
+export async function deleteTeacherStudentLink(token, linkId) {
+  const response = await fetch(
+    `${API_BASE_URL}/admin/teacher-student-links/${linkId}`,
+    {
+      method: "DELETE",
+      headers: getAuthHeader(token),
+    },
+  );
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to delete teacher assignment");
+  }
+
+  return response.json();
+}
