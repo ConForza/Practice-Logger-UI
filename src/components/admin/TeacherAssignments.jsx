@@ -3,6 +3,7 @@ import {
   getAdminUsers,
   getTeacherStudentLinks,
   createTeacherStudentLink,
+  deleteTeacherStudentLink,
 } from "../../services/api";
 
 export default function TeacherAssignments({ token }) {
@@ -15,6 +16,9 @@ export default function TeacherAssignments({ token }) {
   const [isCreatingAssignment, setIsCreatingAssignment] = useState(false);
   const [createAssignmentError, setCreateAssignmentError] = useState("");
   const [createAssignmentSuccess, setCreateAssignmentSuccess] = useState("");
+  const [deletingAssignmentId, setDeletingAssignmentId] = useState(null);
+  const [deleteAssignmentError, setDeleteAssignmentError] = useState("");
+  const [deleteAssignmentSuccess, setDeleteAssignmentSuccess] = useState("");
   const selectedAssignmentAlreadyExists = links.some(
     (link) =>
       link.teacher_id === Number(selectedTeacherId) &&
@@ -51,6 +55,28 @@ export default function TeacherAssignments({ token }) {
       setCreateAssignmentError(err.message);
     } finally {
       setIsCreatingAssignment(false);
+    }
+  }
+
+  async function handleDeleteAssignment(linkId) {
+    setDeletingAssignmentId(linkId);
+    setDeleteAssignmentError("");
+    setDeleteAssignmentSuccess("");
+    setCreateAssignmentError("");
+    setCreateAssignmentSuccess("");
+
+    try {
+      await deleteTeacherStudentLink(token, linkId);
+
+      setDeleteAssignmentSuccess(
+        "Teacher assignment was removed successfully.",
+      );
+
+      await fetchAssignmentData();
+    } catch (err) {
+      setDeleteAssignmentError(err.message);
+    } finally {
+      setDeletingAssignmentId(null);
     }
   }
 
@@ -189,6 +215,20 @@ export default function TeacherAssignments({ token }) {
             <p>{createAssignmentSuccess}</p>
           </div>
         )}
+
+        {deleteAssignmentError && (
+          <div className="empty-state">
+            <h3>Could not remove assignment</h3>
+            <p>{deleteAssignmentError}</p>
+          </div>
+        )}
+
+        {deleteAssignmentSuccess && (
+          <div className="success-message">
+            <h5>Assignment removed</h5>
+            <p>{deleteAssignmentSuccess}</p>
+          </div>
+        )}
       </div>
 
       <div className="teacher-assignments__list">
@@ -198,15 +238,29 @@ export default function TeacherAssignments({ token }) {
           <p>No teacher-student assignments have been created yet.</p>
         ) : (
           <ul className="admin-user-list">
-            {links.map((link) => (
-              <li key={link.id} className="admin-user-card">
-                <div>
-                  <h3>{getUserEmail(link.teacher_id)}</h3>
-                  <p>can view and support</p>
-                  <h3>{getUserEmail(link.student_id)}</h3>
-                </div>
-              </li>
-            ))}
+            {links.map((link) => {
+              const isDeletingThisAssignment = deletingAssignmentId === link.id;
+
+              return (
+                <li key={link.id} className="admin-user-card">
+                  <div>
+                    <h3>{getUserEmail(link.teacher_id)}</h3>
+                    <p>can view and support</p>
+                    <h3>{getUserEmail(link.student_id)}</h3>
+                  </div>
+
+                  <div className="admin-user-card__status">
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteAssignment(link.id)}
+                      disabled={deletingAssignmentId !== null}
+                    >
+                      {isDeletingThisAssignment ? "Removing..." : "Remove"}
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
