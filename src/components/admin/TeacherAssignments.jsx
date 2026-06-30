@@ -6,6 +6,8 @@ export default function TeacherAssignments({ token }) {
   const [links, setLinks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [assignmentsError, setAssignmentsError] = useState("");
+  const [selectedTeacherId, setSelectedTeacherId] = useState("");
+  const [selectedStudentId, setSelectedStudentId] = useState("");
 
   function getUserEmail(userId) {
     const user = users.find((user) => user.id === userId);
@@ -61,18 +63,60 @@ export default function TeacherAssignments({ token }) {
       )}
 
       {!isLoading && !assignmentsError && (
-        <>
-          <div className="empty-state">
-            <h3>Assignment data loaded</h3>
-            <p>
-              Found {teachers.length} active teacher
-              {teachers.length === 1 ? "" : "s"} and {students.length} active
-              student{students.length === 1 ? "" : "s"}.
-            </p>
-            <p>Current assignments: {links.length}</p>
-          </div>
-        </>
+        <div className="empty-state">
+          <h3>Assignment data loaded</h3>
+          <p>
+            Found {teachers.length} active teacher
+            {teachers.length === 1 ? "" : "s"} and {students.length} active
+            student{students.length === 1 ? "" : "s"}.
+          </p>
+          <p>Current assignments: {links.length}</p>
+        </div>
       )}
+
+      <div className="teacher-assignments__form">
+        <h4>Assign student to teacher</h4>
+
+        <div className="teacher-assignments__controls">
+          <label>
+            Teacher
+            <select
+              value={selectedTeacherId}
+              onChange={(e) => setSelectedTeacherId(e.target.value)}
+            >
+              <option value="">Select a teacher</option>
+              {teachers.map((teacher) => (
+                <option key={teacher.id} value={teacher.id}>
+                  {teacher.email}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Student
+            <select
+              value={selectedStudentId}
+              onChange={(e) => setSelectedStudentId(e.target.value)}
+            >
+              <option value="">Select a student</option>
+              {students.map((student) => (
+                <option key={student.id} value={student.id}>
+                  {student.email}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <button
+            type="button"
+            disabled={!selectedTeacherId || !selectedStudentId}
+          >
+            Assign student
+          </button>
+        </div>
+      </div>
+
       <div className="teacher-assignments__list">
         <h4>Current assignments</h4>
 
