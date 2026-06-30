@@ -15,6 +15,11 @@ export default function TeacherAssignments({ token }) {
   const [isCreatingAssignment, setIsCreatingAssignment] = useState(false);
   const [createAssignmentError, setCreateAssignmentError] = useState("");
   const [createAssignmentSuccess, setCreateAssignmentSuccess] = useState("");
+  const selectedAssignmentAlreadyExists = links.some(
+    (link) =>
+      link.teacher_id === Number(selectedTeacherId) &&
+      link.student_id === Number(selectedStudentId),
+  );
 
   function getUserEmail(userId) {
     const user = users.find((user) => user.id === userId);
@@ -117,7 +122,11 @@ export default function TeacherAssignments({ token }) {
             Teacher
             <select
               value={selectedTeacherId}
-              onChange={(e) => setSelectedTeacherId(e.target.value)}
+              onChange={(e) => {
+                setSelectedTeacherId(e.target.value);
+                setCreateAssignmentError("");
+                setCreateAssignmentSuccess("");
+              }}
             >
               <option value="">Select a teacher</option>
               {teachers.map((teacher) => (
@@ -132,7 +141,11 @@ export default function TeacherAssignments({ token }) {
             Student
             <select
               value={selectedStudentId}
-              onChange={(e) => setSelectedStudentId(e.target.value)}
+              onChange={(e) => {
+                setSelectedStudentId(e.target.value);
+                setCreateAssignmentError("");
+                setCreateAssignmentSuccess("");
+              }}
             >
               <option value="">Select a student</option>
               {students.map((student) => (
@@ -147,12 +160,22 @@ export default function TeacherAssignments({ token }) {
             type="button"
             onClick={handleCreateAssignment}
             disabled={
-              !selectedTeacherId || !selectedStudentId || isCreatingAssignment
+              !selectedTeacherId ||
+              !selectedStudentId ||
+              selectedAssignmentAlreadyExists ||
+              isCreatingAssignment
             }
           >
             {isCreatingAssignment ? "Assigning..." : "Assign student"}
           </button>
         </div>
+
+        {selectedAssignmentAlreadyExists && (
+          <p className="loading-message">
+            This student is already assigned to the selected teacher.
+          </p>
+        )}
+
         {createAssignmentError && (
           <div className="empty-state">
             <h3>Could not create assignment</h3>
