@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getAdminUsers, getTeacherStudentLinks } from "../../services/api";
+import {
+  getAdminUsers,
+  getTeacherStudentLinks,
+  createTeacherStudentLink,
+} from "../../services/api";
 
 export default function TeacherAssignments({ token }) {
   const [users, setUsers] = useState([]);
@@ -8,10 +12,41 @@ export default function TeacherAssignments({ token }) {
   const [assignmentsError, setAssignmentsError] = useState("");
   const [selectedTeacherId, setSelectedTeacherId] = useState("");
   const [selectedStudentId, setSelectedStudentId] = useState("");
+  const [isCreatingAssignment, setIsCreatingAssignment] = useState(false);
+  const [createAssignmentError, setCreateAssignmentError] = useState("");
+  const [createAssignmentSuccess, setCreateAssignmentSuccess] = useState("");
 
   function getUserEmail(userId) {
     const user = users.find((user) => user.id === userId);
     return user?.email || "Unknown user";
+  }
+
+  async function handleCreateAssignment() {
+    if (!selectedTeacherId || !selectedStudentId) return;
+
+    setIsCreatingAssignment(true);
+    setCreateAssignmentError("");
+    setCreateAssignmentSuccess("");
+
+    try {
+      await createTeacherStudentLink(
+        token,
+        Number(selectedTeacherId),
+        Number(selectedStudentId),
+      );
+
+      setSelectedTeacherId("");
+      setSelectedStudentId("");
+      setCreateAssignmentSuccess(
+        "Teacher assignment was created successfully.",
+      );
+
+      await fetchAssignmentData();
+    } catch (err) {
+      setCreateAssignmentError(err.message);
+    } finally {
+      setIsCreatingAssignment(false);
+    }
   }
 
   async function fetchAssignmentData() {
@@ -110,11 +145,27 @@ export default function TeacherAssignments({ token }) {
 
           <button
             type="button"
-            disabled={!selectedTeacherId || !selectedStudentId}
+            onClick={handleCreateAssignment}
+            disabled={
+              !selectedTeacherId || !selectedStudentId || isCreatingAssignment
+            }
           >
-            Assign student
+            {isCreatingAssignment ? "Assigning..." : "Assign student"}
           </button>
         </div>
+        {createAssignmentError && (
+          <div className="empty-state">
+            <h3>Could not create assignment</h3>
+            <p>{createAssignmentError}</p>
+          </div>
+        )}
+
+        {createAssignmentSuccess && (
+          <div className="success-message">
+            <h5>Assignment created</h5>
+            <p>{createAssignmentSuccess}</p>
+          </div>
+        )}
       </div>
 
       <div className="teacher-assignments__list">
