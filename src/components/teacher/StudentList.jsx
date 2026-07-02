@@ -6,8 +6,11 @@ export default function StudentList({
   if (students.length === 0) {
     return (
       <div className="empty-state">
-        <h3>No students found</h3>
-        <p>Student users will appear here once they have registered.</p>
+        <h3>No students assigned yet.</h3>
+        <p>
+          Students assigned by an admin will appear here. Once assigned, you
+          will be able to view their practice sessions and assign tasks.
+        </p>
       </div>
     );
   }

@@ -2,8 +2,11 @@ export default function WeeklyProgressList({ progress }) {
   if (progress.length === 0) {
     return (
       <div className="empty-state">
-        <h3>No practice recorded this week</h3>
-        <p>Completed student practice sessions will appear here.</p>
+        <h3>No assigned students yet</h3>
+        <p>
+          Students assigned by an admin will appear here. Once they record
+          practice this week, their activity will be included in this summary.
+        </p>
       </div>
     );
   }

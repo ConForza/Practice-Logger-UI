@@ -36,6 +36,8 @@ export default function TeacherAssignments({ token }) {
     setIsCreatingAssignment(true);
     setCreateAssignmentError("");
     setCreateAssignmentSuccess("");
+    setDeleteAssignmentError("");
+    setDeleteAssignmentSuccess("");
 
     try {
       await createTeacherStudentLink(
@@ -129,141 +131,154 @@ export default function TeacherAssignments({ token }) {
       )}
 
       {!isLoading && !assignmentsError && (
-        <div className="empty-state">
-          <h3>Assignment data loaded</h3>
-          <p>
-            Found {teachers.length} active teacher
-            {teachers.length === 1 ? "" : "s"} and {students.length} active
-            student{students.length === 1 ? "" : "s"}.
-          </p>
-          <p>Current assignments: {links.length}</p>
-        </div>
+        <>
+          <div className="empty-state">
+            <h3>Assignment data loaded</h3>
+            <p>
+              Found {teachers.length} active teacher
+              {teachers.length === 1 ? "" : "s"} and {students.length} active
+              student{students.length === 1 ? "" : "s"}.
+            </p>
+            <p>Current assignments: {links.length}</p>
+          </div>
+
+          <div className="teacher-assignments__form">
+            <h4>Assign student to teacher</h4>
+
+            <div className="teacher-assignments__controls">
+              <label>
+                Teacher
+                <select
+                  value={selectedTeacherId}
+                  onChange={(e) => {
+                    setSelectedTeacherId(e.target.value);
+                    setCreateAssignmentError("");
+                    setCreateAssignmentSuccess("");
+                    setDeleteAssignmentError("");
+                    setDeleteAssignmentSuccess("");
+                  }}
+                >
+                  <option value="">Select a teacher</option>
+                  {teachers.map((teacher) => (
+                    <option key={teacher.id} value={teacher.id}>
+                      {teacher.email}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label>
+                Student
+                <select
+                  value={selectedStudentId}
+                  onChange={(e) => {
+                    setSelectedStudentId(e.target.value);
+                    setCreateAssignmentError("");
+                    setCreateAssignmentSuccess("");
+                    setDeleteAssignmentError("");
+                    setDeleteAssignmentSuccess("");
+                  }}
+                >
+                  <option value="">Select a student</option>
+                  {students.map((student) => (
+                    <option key={student.id} value={student.id}>
+                      {student.email}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <button
+                type="button"
+                onClick={handleCreateAssignment}
+                disabled={
+                  !selectedTeacherId ||
+                  !selectedStudentId ||
+                  selectedAssignmentAlreadyExists ||
+                  isCreatingAssignment
+                }
+              >
+                {isCreatingAssignment ? "Assigning..." : "Assign student"}
+              </button>
+            </div>
+
+            {selectedAssignmentAlreadyExists && (
+              <p className="loading-message">
+                This student is already assigned to the selected teacher.
+              </p>
+            )}
+
+            {createAssignmentError && (
+              <div className="empty-state">
+                <h3>Could not create assignment</h3>
+                <p>{createAssignmentError}</p>
+              </div>
+            )}
+
+            {createAssignmentSuccess && (
+              <div className="success-message">
+                <h5>Assignment created</h5>
+                <p>{createAssignmentSuccess}</p>
+              </div>
+            )}
+
+            {deleteAssignmentError && (
+              <div className="empty-state">
+                <h3>Could not remove assignment</h3>
+                <p>{deleteAssignmentError}</p>
+              </div>
+            )}
+
+            {deleteAssignmentSuccess && (
+              <div className="success-message">
+                <h5>Assignment removed</h5>
+                <p>{deleteAssignmentSuccess}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="teacher-assignments__list">
+            <h4>Current assignments</h4>
+
+            {links.length === 0 ? (
+              <div className="empty-state">
+                <h3>No assignments yet</h3>
+                <p>
+                  Teacher-student assignments will appear here once they have
+                  been created.
+                </p>
+              </div>
+            ) : (
+              <ul className="admin-user-list">
+                {links.map((link) => {
+                  const isDeletingThisAssignment =
+                    deletingAssignmentId === link.id;
+
+                  return (
+                    <li key={link.id} className="admin-user-card">
+                      <div>
+                        <h3>{getUserEmail(link.teacher_id)}</h3>
+                        <p>can view and support</p>
+                        <h3>{getUserEmail(link.student_id)}</h3>
+                      </div>
+
+                      <div className="admin-user-card__status">
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteAssignment(link.id)}
+                          disabled={deletingAssignmentId !== null}
+                        >
+                          {isDeletingThisAssignment ? "Removing..." : "Remove"}
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </>
       )}
-
-      <div className="teacher-assignments__form">
-        <h4>Assign student to teacher</h4>
-
-        <div className="teacher-assignments__controls">
-          <label>
-            Teacher
-            <select
-              value={selectedTeacherId}
-              onChange={(e) => {
-                setSelectedTeacherId(e.target.value);
-                setCreateAssignmentError("");
-                setCreateAssignmentSuccess("");
-              }}
-            >
-              <option value="">Select a teacher</option>
-              {teachers.map((teacher) => (
-                <option key={teacher.id} value={teacher.id}>
-                  {teacher.email}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label>
-            Student
-            <select
-              value={selectedStudentId}
-              onChange={(e) => {
-                setSelectedStudentId(e.target.value);
-                setCreateAssignmentError("");
-                setCreateAssignmentSuccess("");
-              }}
-            >
-              <option value="">Select a student</option>
-              {students.map((student) => (
-                <option key={student.id} value={student.id}>
-                  {student.email}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <button
-            type="button"
-            onClick={handleCreateAssignment}
-            disabled={
-              !selectedTeacherId ||
-              !selectedStudentId ||
-              selectedAssignmentAlreadyExists ||
-              isCreatingAssignment
-            }
-          >
-            {isCreatingAssignment ? "Assigning..." : "Assign student"}
-          </button>
-        </div>
-
-        {selectedAssignmentAlreadyExists && (
-          <p className="loading-message">
-            This student is already assigned to the selected teacher.
-          </p>
-        )}
-
-        {createAssignmentError && (
-          <div className="empty-state">
-            <h3>Could not create assignment</h3>
-            <p>{createAssignmentError}</p>
-          </div>
-        )}
-
-        {createAssignmentSuccess && (
-          <div className="success-message">
-            <h5>Assignment created</h5>
-            <p>{createAssignmentSuccess}</p>
-          </div>
-        )}
-
-        {deleteAssignmentError && (
-          <div className="empty-state">
-            <h3>Could not remove assignment</h3>
-            <p>{deleteAssignmentError}</p>
-          </div>
-        )}
-
-        {deleteAssignmentSuccess && (
-          <div className="success-message">
-            <h5>Assignment removed</h5>
-            <p>{deleteAssignmentSuccess}</p>
-          </div>
-        )}
-      </div>
-
-      <div className="teacher-assignments__list">
-        <h4>Current assignments</h4>
-
-        {links.length === 0 ? (
-          <p>No teacher-student assignments have been created yet.</p>
-        ) : (
-          <ul className="admin-user-list">
-            {links.map((link) => {
-              const isDeletingThisAssignment = deletingAssignmentId === link.id;
-
-              return (
-                <li key={link.id} className="admin-user-card">
-                  <div>
-                    <h3>{getUserEmail(link.teacher_id)}</h3>
-                    <p>can view and support</p>
-                    <h3>{getUserEmail(link.student_id)}</h3>
-                  </div>
-
-                  <div className="admin-user-card__status">
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteAssignment(link.id)}
-                      disabled={deletingAssignmentId !== null}
-                    >
-                      {isDeletingThisAssignment ? "Removing..." : "Remove"}
-                    </button>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </div>
     </div>
   );
 }

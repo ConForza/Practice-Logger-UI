@@ -193,8 +193,8 @@ export default function TeacherDashboard({ activeView, token }) {
           <div className="weekly-progress-section">
             <div className="weekly-progress-section__header">
               <div>
-                <h3>Weekly student progress</h3>
-                <p>Students ranked by completed practice duration this week.</p>
+                <h3>Weekly practice summary</h3>
+                <p>Review recorded student practice for this week.</p>
               </div>
 
               <button
@@ -238,8 +238,11 @@ export default function TeacherDashboard({ activeView, token }) {
           </div>
         )}
 
-        {isLoadingStudents && <p>Loading students...</p>}
-        {studentsError && (
+        {activeView === "students" && isLoadingStudents && (
+          <p className="loading-message">Loading students...</p>
+        )}
+
+        {activeView === "students" && studentsError && (
           <div className="empty-state">
             <h3>Could not load students</h3>
 
