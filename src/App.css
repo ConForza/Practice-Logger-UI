@@ -367,6 +367,17 @@ textarea {
   margin-top: 0;
 }
 
+.task-card__assigned-label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: #f0f7ff;
+  color: #005fcc;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 button {
   padding: 0.55rem 0.85rem;
   border: 1px solid #bbb;
