@@ -133,14 +133,37 @@ export default function TeacherAssignments({ token }) {
       {!isLoading && !assignmentsError && (
         <>
           <div className="empty-state">
-            <h3>Assignment data loaded</h3>
+            <h3>Teacher assignment overview</h3>
             <p>
-              Found {teachers.length} active teacher
-              {teachers.length === 1 ? "" : "s"} and {students.length} active
-              student{students.length === 1 ? "" : "s"}.
+              There {teachers.length === 1 ? "is" : "are"} {teachers.length}{" "}
+              active teacher{teachers.length === 1 ? "" : "s"} and{" "}
+              {students.length} active student{students.length === 1 ? "" : "s"}{" "}
+              available for assignment.
             </p>
-            <p>Current assignments: {links.length}</p>
+            <p>
+              Current assignment{links.length === 1 ? "" : "s"}: {links.length}
+            </p>
           </div>
+
+          {teachers.length === 0 && (
+            <div className="empty-state">
+              <h3>No active teachers available</h3>
+              <p>
+                Create or reactivate a teacher account before assigning
+                students.
+              </p>
+            </div>
+          )}
+
+          {students.length === 0 && (
+            <div className="empty-state">
+              <h3>No active students available</h3>
+              <p>
+                Create or reactivate a student account before assigning them to
+                teachers.
+              </p>
+            </div>
+          )}
 
           <div className="teacher-assignments__form">
             <h4>Assign student to teacher</h4>
@@ -192,6 +215,8 @@ export default function TeacherAssignments({ token }) {
                 type="button"
                 onClick={handleCreateAssignment}
                 disabled={
+                  teachers.length === 0 ||
+                  students.length === 0 ||
                   !selectedTeacherId ||
                   !selectedStudentId ||
                   selectedAssignmentAlreadyExists ||
@@ -258,7 +283,7 @@ export default function TeacherAssignments({ token }) {
                     <li key={link.id} className="admin-user-card">
                       <div>
                         <h3>{getUserEmail(link.teacher_id)}</h3>
-                        <p>can view and support</p>
+                        <p>is assigned to support</p>
                         <h3>{getUserEmail(link.student_id)}</h3>
                       </div>
 
