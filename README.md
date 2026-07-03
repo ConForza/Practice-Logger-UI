@@ -2,7 +2,7 @@
 
 React frontend for a FastAPI-powered music practice tracking application.
 
-This project is part of a full-stack portfolio app designed for music students and teachers. Students can manage practice tasks, start and end practice sessions, and review session history. Teachers can view registered students, inspect student practice history, and assign practice tasks.
+This project is part of a full-stack portfolio app designed for music students and teachers. Students can manage practice tasks, start and end practice sessions, and review session history. Teachers can view students assigned to them, inspect student practice history, and assign practice tasks. Admins can manage user accounts and assign students to teachers.
 
 ## Live App
 
@@ -60,16 +60,21 @@ Practice Logger can be installed as a Progressive Web App, allowing students and
 - Active practice session restore
 - Session history view
 - Helpful empty states for tasks and sessions
+- Teacher-assigned tasks appear in the student task list
+- Teacher-assigned tasks are labelled as “Assigned by your teacher”
+- Student-created tasks remain separate/general tasks
 
 ### Teacher features
 
 - Teacher dashboard with role-aware navigation
-- Student list fetched from the backend
+- View only students assigned by an admin
 - Selected student detail panel
 - Selected student practice session history
-- Refresh and retry states for student/session data
 - Teacher task assignment form
 - Recently assigned task confirmation
+- Weekly practice summary for assigned students
+- Refresh and retry states for student/session/progress data
+- Helpful empty states when no students are assigned
 - Form validation and success/error feedback
 
 ### Admin features
@@ -78,6 +83,11 @@ Practice Logger can be installed as a Progressive Web App, allowing students and
 - Change user roles
 - Activate and deactivate accounts
 - Protect current admin account from accidental self-demotion or deactivation
+- Reset user passwords
+- Assign students to teachers
+- View current teacher-student assignments
+- Prevent duplicate teacher-student assignments
+- Remove teacher-student assignments
 
 ### Layout and UI
 
@@ -104,6 +114,10 @@ The backend provides:
 - Active session restore
 - Session history
 - Role-based access helpers
+- Admin-managed teacher-student ownership
+- Teacher access restricted to assigned students
+- Teacher-assigned task labelling
+- Weekly progress summaries for assigned students
 
 ## Getting started
 
@@ -169,12 +183,12 @@ VITE_API_BASE_URL=https://practice-logger-backend-production.up.railway.app/api/
 
 ## Current status
 
-The student dashboard is functional. Teacher mode now supports viewing students, reviewing selected student practice sessions, and assigning practice tasks. Admin mode has basic user management features.
+The student, teacher, and admin workflows are functional and deployed. Students can manage tasks and log practice sessions. Teachers can view assigned students, review student practice history, assign tasks, and view weekly practice summaries. Admins can manage users and teacher-student assignments.
 
 ## Planned improvements
 
-- Improved teacher-student relationships
 - Multi-task practice sessions
 - More detailed progress statistics
 - Persistent login / refresh tokens
-- Assignment overview
+- Alembic-backed database migrations
+- Expanded automated tests
