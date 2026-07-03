@@ -71,6 +71,16 @@ export default function TeacherDashboard({ activeView, token }) {
     try {
       const studentsData = await getTeacherStudents(token);
       setStudents(studentsData);
+
+      setSelectedStudent((currentSelectedStudent) => {
+        if (!currentSelectedStudent) return null;
+
+        const stillAssigned = studentsData.some(
+          (student) => student.id === currentSelectedStudent.id,
+        );
+
+        return stillAssigned ? currentSelectedStudent : null;
+      });
     } catch (err) {
       setStudentsError(err.message);
     } finally {
@@ -124,6 +134,8 @@ export default function TeacherDashboard({ activeView, token }) {
       setAssignmentSuccess(
         `Task assigned successfully. "${assignedTask.title}" will now appear in ${selectedStudent.email}'s task list.`,
       );
+
+      await fetchSelectedStudentSessions(selectedStudent.id);
     } catch (err) {
       setAssignmentError(err.message);
     } finally {
@@ -156,6 +168,7 @@ export default function TeacherDashboard({ activeView, token }) {
 
   useEffect(() => {
     if (activeView !== "dashboard") return;
+    if (!token) return;
 
     fetchWeeklyProgress();
   }, [activeView, token]);
