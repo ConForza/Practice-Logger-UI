@@ -43,6 +43,10 @@ Practice Logger can be installed as a Progressive Web App, allowing students and
 
 ![Admin users panel showing role and account management](docs/screenshots/admin-users.png)
 
+### Admin teacher assignments
+
+![Admin teacher assignments panel showing teacher-student assignment management](docs/screenshots/admin-teacher-assignments.png)
+
 ## Current features
 
 ### Authentication
