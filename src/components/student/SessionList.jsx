@@ -9,9 +9,10 @@ function formatSessionDate(startTime) {
 export default function SessionList({ sessions }) {
   if (!sessions || sessions.length === 0) {
     return (
-      <p className="empty-state">
-        No practice sessions yet. Completed sessions will appear here.
-      </p>
+      <div className="empty-state">
+        <h3>No practice sessions yet</h3>
+        <p>Completed sessions will appear here after practice is recorded.</p>
+      </div>
     );
   }
 
