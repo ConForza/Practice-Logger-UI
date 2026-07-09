@@ -65,53 +65,55 @@ export default function TaskList({
     <>
       <h2 className="task-list__header">Recent Tasks</h2>
       <ul className="task-list">
-        {tasks.toReversed().map((task) => {
-          const isTeacherAssigned = task.teacher_student_link_id !== null;
+        {[...tasks]
+          .sort((a, b) => b.id - a.id)
+          .map((task) => {
+            const isTeacherAssigned = task.teacher_student_link_id !== null;
 
-          return (
-            <li className="task-card" key={task.id}>
-              <h3>{task.title}</h3>
+            return (
+              <li className="task-card" key={task.id}>
+                <h3>{task.title}</h3>
 
-              {isTeacherAssigned && (
-                <span className="task-card__assigned-label">
-                  Assigned by your teacher
-                </span>
-              )}
+                {isTeacherAssigned && (
+                  <span className="task-card__assigned-label">
+                    Assigned by your teacher
+                  </span>
+                )}
 
-              <p>{task.description}</p>
-              <p>
-                Status:{" "}
-                <span className={getStatusClass(task.status)}>
-                  {getStatusLabel(task.status)}
-                </span>
-              </p>
-              <div className="task-actions">
-                <button
-                  onClick={() => onDeleteTask(task.id)}
-                  disabled={
-                    deletingTaskId === task.id || Boolean(activeSession)
-                  }
-                >
-                  {deletingTaskId === task.id
-                    ? "Deleting..."
-                    : activeSession
-                      ? "Locked during session"
-                      : "Delete"}
-                </button>
-                <button
-                  onClick={() => onStartSession(task.id)}
-                  disabled={isStartButtonDisabled(
-                    task,
-                    startingTaskId,
-                    activeSession,
-                  )}
-                >
-                  {getStartButtonText(task, startingTaskId, activeSession)}
-                </button>
-              </div>
-            </li>
-          );
-        })}
+                <p>{task.description}</p>
+                <p>
+                  Status:{" "}
+                  <span className={getStatusClass(task.status)}>
+                    {getStatusLabel(task.status)}
+                  </span>
+                </p>
+                <div className="task-actions">
+                  <button
+                    onClick={() => onDeleteTask(task.id)}
+                    disabled={
+                      deletingTaskId === task.id || Boolean(activeSession)
+                    }
+                  >
+                    {deletingTaskId === task.id
+                      ? "Deleting..."
+                      : activeSession
+                        ? "Locked during session"
+                        : "Delete"}
+                  </button>
+                  <button
+                    onClick={() => onStartSession(task.id)}
+                    disabled={isStartButtonDisabled(
+                      task,
+                      startingTaskId,
+                      activeSession,
+                    )}
+                  >
+                    {getStartButtonText(task, startingTaskId, activeSession)}
+                  </button>
+                </div>
+              </li>
+            );
+          })}
       </ul>
     </>
   );
