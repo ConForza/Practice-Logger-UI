@@ -19,10 +19,14 @@ export default function TeacherAssignments({ token }) {
   const [deletingAssignmentId, setDeletingAssignmentId] = useState(null);
   const [deleteAssignmentError, setDeleteAssignmentError] = useState("");
   const [deleteAssignmentSuccess, setDeleteAssignmentSuccess] = useState("");
-  const selectedAssignmentAlreadyExists = links.some(
-    (link) =>
-      link.teacher_id === Number(selectedTeacherId) &&
-      link.student_id === Number(selectedStudentId),
+  const selectedAssignmentAlreadyExists = Boolean(
+    selectedTeacherId &&
+    selectedStudentId &&
+    links.some(
+      (link) =>
+        link.teacher_id === Number(selectedTeacherId) &&
+        link.student_id === Number(selectedStudentId),
+    ),
   );
 
   function getUserEmail(userId) {
@@ -107,13 +111,13 @@ export default function TeacherAssignments({ token }) {
     fetchAssignmentData();
   }, [token]);
 
-  const teachers = users.filter(
-    (user) => user.role === "teacher" && user.is_active,
-  );
+  const teachers = users
+    .filter((user) => user.role === "teacher" && user.is_active)
+    .toSorted((a, b) => a.email.localeCompare(b.email));
 
-  const students = users.filter(
-    (user) => user.role === "student" && user.is_active,
-  );
+  const students = users
+    .filter((user) => user.role === "student" && user.is_active)
+    .toSorted((a, b) => a.email.localeCompare(b.email));
 
   return (
     <div className="teacher-assignments">
