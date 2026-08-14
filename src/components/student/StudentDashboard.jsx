@@ -27,16 +27,23 @@ export default function StudentDashboard({
   activeSession,
   sessionNotes,
   isEndingSession,
+  isStartingSession,
+  isActionPending,
+  isClearingCurrentTask,
   tasks,
   sessions,
   deletingTaskId,
-  startingTaskId,
+  taskActionId,
+  taskStatusActionId,
   isCreatingTask,
   onCreateTask,
   onEndSession,
   onSessionNotesChange,
   onDeleteTask,
   onStartSession,
+  onPracticeTask,
+  onClearCurrentTask,
+  onTaskStatusChange,
   token,
 }) {
   const viewCopy = STUDENT_VIEW_COPY[activeView] || STUDENT_VIEW_COPY.dashboard;
@@ -56,19 +63,29 @@ export default function StudentDashboard({
             activeSession={activeSession}
             sessionNotes={sessionNotes}
             isEndingSession={isEndingSession}
+            isStartingSession={isStartingSession}
+            isActionPending={isActionPending}
+            isClearingCurrentTask={isClearingCurrentTask}
+            tasks={tasks}
             onSessionNotesChange={onSessionNotesChange}
             onEndSession={onEndSession}
+            onStartSession={onStartSession}
+            onSelectTask={onPracticeTask}
+            onClearCurrentTask={onClearCurrentTask}
           />
 
           <TaskSection
             tasks={tasks}
             activeSession={activeSession}
             deletingTaskId={deletingTaskId}
-            startingTaskId={startingTaskId}
+            taskActionId={taskActionId}
+            taskStatusActionId={taskStatusActionId}
+            isActionPending={isActionPending}
             isCreatingTask={isCreatingTask}
             onCreateTask={onCreateTask}
             onDeleteTask={onDeleteTask}
-            onStartSession={onStartSession}
+            onPracticeTask={onPracticeTask}
+            onTaskStatusChange={onTaskStatusChange}
           />
 
           <SessionHistorySection sessions={sessions} />
@@ -80,11 +97,14 @@ export default function StudentDashboard({
           tasks={tasks}
           activeSession={activeSession}
           deletingTaskId={deletingTaskId}
-          startingTaskId={startingTaskId}
+          taskActionId={taskActionId}
+          taskStatusActionId={taskStatusActionId}
+          isActionPending={isActionPending}
           isCreatingTask={isCreatingTask}
           onCreateTask={onCreateTask}
           onDeleteTask={onDeleteTask}
-          onStartSession={onStartSession}
+          onPracticeTask={onPracticeTask}
+          onTaskStatusChange={onTaskStatusChange}
         />
       )}
 

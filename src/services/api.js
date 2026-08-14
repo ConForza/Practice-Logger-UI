@@ -151,13 +151,14 @@ export async function getActiveSession(token) {
   return response.json();
 }
 
-export async function startSession(token, taskId) {
-  const response = await fetch(`${API_BASE_URL}/sessions/start/${taskId}`, {
+export async function startPracticeSession(token, taskId = null) {
+  const response = await fetch(`${API_BASE_URL}/sessions/start`, {
     method: "POST",
     headers: {
       ...getAuthHeader(token),
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(taskId ? { task_id: taskId } : {}),
   });
 
   if (!response.ok) {
@@ -167,8 +168,44 @@ export async function startSession(token, taskId) {
   return response.json();
 }
 
-export async function endSession(token, taskId, notes) {
-  const response = await fetch(`${API_BASE_URL}/sessions/end/${taskId}`, {
+export async function setCurrentTask(token, sessionId, taskId) {
+  const response = await fetch(
+    `${API_BASE_URL}/sessions/${sessionId}/current-task`,
+    {
+      method: "POST",
+      headers: {
+        ...getAuthHeader(token),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ task_id: taskId }),
+    },
+  );
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to select task");
+  }
+
+  return response.json();
+}
+
+export async function clearCurrentTask(token, sessionId) {
+  const response = await fetch(
+    `${API_BASE_URL}/sessions/${sessionId}/current-task`,
+    {
+      method: "DELETE",
+      headers: getAuthHeader(token),
+    },
+  );
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to clear current task");
+  }
+
+  return response.json();
+}
+
+export async function endPracticeSession(token, sessionId, notes) {
+  const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}/end`, {
     method: "POST",
     headers: {
       ...getAuthHeader(token),
@@ -182,6 +219,65 @@ export async function endSession(token, taskId, notes) {
   }
 
   return response.json();
+}
+
+export async function updateTaskStatus(token, taskId, status) {
+  const response = await fetch(`${API_BASE_URL}/tasks/${taskId}/status`, {
+    method: "PATCH",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to update task status");
+  }
+
+  return response.json();
+}
+
+export async function startLegacySession(token, taskId) {
+  const response = await fetch(`${API_BASE_URL}/sessions/start/${taskId}`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to start legacy session");
+  }
+
+  return response.json();
+}
+
+export async function endLegacySession(token, taskId, notes) {
+  const response = await fetch(`${API_BASE_URL}/sessions/end/${taskId}`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeader(token),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ notes }),
+  });
+
+  if (!response.ok) {
+    await handleApiError(response, "Failed to end legacy session");
+  }
+
+  return response.json();
+}
+
+// Keep the pre-Phase 4 helper names available for compatibility consumers.
+export async function startSession(token, taskId) {
+  return startLegacySession(token, taskId);
+}
+
+export async function endSession(token, taskId, notes) {
+  return endLegacySession(token, taskId, notes);
 }
 
 export async function deleteSession(token, sessionId) {
