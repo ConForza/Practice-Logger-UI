@@ -989,12 +989,21 @@ button:disabled {
 }
 
 @media (max-width: 700px) {
+  .app-shell {
+    --mobile-edge-breathing-room: 1rem;
+  }
+
   .app-container {
     padding: 0;
   }
 
   .navbar {
     padding: 0.75rem 1rem;
+    padding-top: calc(
+      0.75rem + env(safe-area-inset-top, 0px) +
+        var(--mobile-edge-breathing-room)
+    );
+    background: #fff;
     align-items: flex-start;
   }
 
@@ -1024,7 +1033,10 @@ button:disabled {
 
   .app-shell__main {
     padding: 0.75rem;
-    padding-bottom: 6.5rem;
+    padding-bottom: calc(
+      6.5rem + env(safe-area-inset-bottom, 0px) +
+        var(--mobile-edge-breathing-room)
+    );
   }
 
   .dashboard-page__header {
@@ -1048,7 +1060,10 @@ button:disabled {
     border-right: none;
     border-top: 1px solid #ddd;
     padding: 0.5rem;
-    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(
+      0.5rem + env(safe-area-inset-bottom, 0px) +
+        var(--mobile-edge-breathing-room)
+    );
     background: #fff;
     z-index: 10;
   }
