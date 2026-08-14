@@ -995,6 +995,7 @@ button:disabled {
 
   .navbar {
     padding: 0.75rem 1rem;
+    padding-top: calc(0.75rem + env(safe-area-inset-top, 0px) + 0.5rem);
     align-items: flex-start;
   }
 
@@ -1024,7 +1025,7 @@ button:disabled {
 
   .app-shell__main {
     padding: 0.75rem;
-    padding-bottom: 6.5rem;
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px) + 0.5rem);
   }
 
   .dashboard-page__header {
@@ -1048,7 +1049,7 @@ button:disabled {
     border-right: none;
     border-top: 1px solid #ddd;
     padding: 0.5rem;
-    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px) + 0.5rem);
     background: #fff;
     z-index: 10;
   }
