@@ -16,6 +16,7 @@ function TaskCard({
   onPracticeTask,
   taskActionId,
   taskStatusActionId,
+  isActionPending,
   onTaskStatusChange,
 }) {
   const isTeacherAssigned = task.teacher_student_link_id !== null;
@@ -45,7 +46,7 @@ function TaskCard({
         <button
           type="button"
           onClick={() => onPracticeTask(task.id)}
-          disabled={isCompleted || isTaskActionInProgress}
+          disabled={isCompleted || isActionPending}
         >
           {isTaskActionInProgress
             ? "Selecting..."
@@ -63,7 +64,7 @@ function TaskCard({
           onClick={() =>
             onTaskStatusChange(task.id, isCompleted ? "open" : "completed")
           }
-          disabled={isStatusActionInProgress}
+          disabled={isActionPending}
         >
           {isStatusActionInProgress
             ? "Updating..."
@@ -75,7 +76,11 @@ function TaskCard({
         <button
           type="button"
           onClick={() => onDeleteTask(task.id)}
-          disabled={deletingTaskId === task.id || Boolean(activeSession)}
+          disabled={
+            deletingTaskId === task.id ||
+            Boolean(activeSession) ||
+            isActionPending
+          }
         >
           {deletingTaskId === task.id
             ? "Deleting..."
@@ -97,6 +102,7 @@ function TaskGroup({
   onPracticeTask,
   taskActionId,
   taskStatusActionId,
+  isActionPending,
   onTaskStatusChange,
 }) {
   if (tasks.length === 0) return null;
@@ -115,6 +121,7 @@ function TaskGroup({
             onPracticeTask={onPracticeTask}
             taskActionId={taskActionId}
             taskStatusActionId={taskStatusActionId}
+            isActionPending={isActionPending}
             onTaskStatusChange={onTaskStatusChange}
           />
         ))}
@@ -130,6 +137,7 @@ export default function TaskList({
   onPracticeTask,
   taskActionId,
   taskStatusActionId,
+  isActionPending,
   onTaskStatusChange,
   activeSession,
 }) {
@@ -160,6 +168,7 @@ export default function TaskList({
         onPracticeTask={onPracticeTask}
         taskActionId={taskActionId}
         taskStatusActionId={taskStatusActionId}
+        isActionPending={isActionPending}
         onTaskStatusChange={onTaskStatusChange}
       />
       <TaskGroup
@@ -171,6 +180,7 @@ export default function TaskList({
         onPracticeTask={onPracticeTask}
         taskActionId={taskActionId}
         taskStatusActionId={taskStatusActionId}
+        isActionPending={isActionPending}
         onTaskStatusChange={onTaskStatusChange}
       />
     </>

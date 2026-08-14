@@ -203,21 +203,21 @@ function App() {
         prev.map((task) => (task.id === taskId ? updatedTask : task)),
       );
 
-      if (activeSession?.current_task_id === taskId && status === "completed") {
-        const refreshedSession = await getActiveSession(token);
-        setActiveSession(refreshedSession);
-      } else {
-        setActiveSession((currentSession) => {
-          if (!currentSession) return currentSession;
+      setActiveSession((currentSession) => {
+        if (!currentSession) return currentSession;
 
-          return {
-            ...currentSession,
-            tasks: (currentSession.tasks || []).map((task) =>
-              task.id === taskId ? { ...task, status } : task,
-            ),
-          };
-        });
-      }
+        const isCurrentTask = currentSession.current_task_id === taskId;
+        return {
+          ...currentSession,
+          current_task_id:
+            status === "completed" && isCurrentTask
+              ? null
+              : currentSession.current_task_id,
+          tasks: (currentSession.tasks || []).map((task) =>
+            task.id === taskId ? { ...task, status } : task,
+          ),
+        };
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -232,9 +232,18 @@ function App() {
     setError("");
 
     try {
-      await endPracticeSession(token, activeSession.id, sessionNotes);
+      const endedSession = await endPracticeSession(
+        token,
+        activeSession.id,
+        sessionNotes,
+      );
 
       setSessionNotes("");
+      setActiveSession(null);
+      setSessions((prev) => [
+        endedSession,
+        ...prev.filter((session) => session.id !== endedSession.id),
+      ].slice(0, 10));
       await fetchDashboardData(token);
     } catch (err) {
       setError(err.message);
@@ -306,6 +315,13 @@ function App() {
   function renderDashboard() {
     if (!currentUser) return null;
 
+    const isStudentActionPending =
+      isStartingSession ||
+      Boolean(taskActionId) ||
+      isClearingCurrentTask ||
+      isEndingSession ||
+      Boolean(taskStatusActionId);
+
     switch (currentUser.role) {
       case "teacher":
         return <TeacherDashboard activeView={activeView} token={token} />;
@@ -327,7 +343,7 @@ function App() {
             sessionNotes={sessionNotes}
             isEndingSession={isEndingSession}
             isStartingSession={isStartingSession}
-            isTaskActionPending={Boolean(taskActionId)}
+            isActionPending={isStudentActionPending}
             isClearingCurrentTask={isClearingCurrentTask}
             tasks={tasks}
             sessions={sessions}

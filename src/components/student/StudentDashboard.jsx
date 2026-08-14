@@ -28,7 +28,7 @@ export default function StudentDashboard({
   sessionNotes,
   isEndingSession,
   isStartingSession,
-  isTaskActionPending,
+  isActionPending,
   isClearingCurrentTask,
   tasks,
   sessions,
@@ -64,7 +64,7 @@ export default function StudentDashboard({
             sessionNotes={sessionNotes}
             isEndingSession={isEndingSession}
             isStartingSession={isStartingSession}
-            isTaskActionPending={isTaskActionPending}
+            isActionPending={isActionPending}
             isClearingCurrentTask={isClearingCurrentTask}
             tasks={tasks}
             onSessionNotesChange={onSessionNotesChange}
@@ -80,6 +80,7 @@ export default function StudentDashboard({
             deletingTaskId={deletingTaskId}
             taskActionId={taskActionId}
             taskStatusActionId={taskStatusActionId}
+            isActionPending={isActionPending}
             isCreatingTask={isCreatingTask}
             onCreateTask={onCreateTask}
             onDeleteTask={onDeleteTask}
@@ -98,6 +99,7 @@ export default function StudentDashboard({
           deletingTaskId={deletingTaskId}
           taskActionId={taskActionId}
           taskStatusActionId={taskStatusActionId}
+          isActionPending={isActionPending}
           isCreatingTask={isCreatingTask}
           onCreateTask={onCreateTask}
           onDeleteTask={onDeleteTask}

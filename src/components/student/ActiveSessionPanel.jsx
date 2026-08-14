@@ -18,7 +18,7 @@ export default function ActiveSessionPanel({
   sessionNotes,
   isEndingSession,
   isStartingSession,
-  isTaskActionPending,
+  isActionPending,
   isClearingCurrentTask,
   tasks,
   onSessionNotesChange,
@@ -101,7 +101,7 @@ export default function ActiveSessionPanel({
                 onSelectTask(Number(event.target.value));
               }
             }}
-            disabled={isTaskActionPending || openTasks.length === 0}
+            disabled={isActionPending || openTasks.length === 0}
           >
             <option value="">Select a task...</option>
             {openTasks.map((task) => (
@@ -115,7 +115,7 @@ export default function ActiveSessionPanel({
             <button
               type="button"
               onClick={onClearCurrentTask}
-              disabled={isClearingCurrentTask}
+              disabled={isActionPending}
             >
               {isClearingCurrentTask
                 ? "Clearing..."
@@ -163,7 +163,7 @@ export default function ActiveSessionPanel({
       </div>
 
       <div className="active-session-actions">
-        <button type="button" onClick={onEndSession} disabled={isEndingSession}>
+        <button type="button" onClick={onEndSession} disabled={isActionPending}>
           {isEndingSession ? "Ending session..." : "End practice session"}
         </button>
       </div>

@@ -7,6 +7,7 @@ export default function TaskSection({
   deletingTaskId,
   taskActionId,
   taskStatusActionId,
+  isActionPending,
   isCreatingTask,
   onCreateTask,
   onDeleteTask,
@@ -24,6 +25,7 @@ export default function TaskSection({
         onPracticeTask={onPracticeTask}
         taskActionId={taskActionId}
         taskStatusActionId={taskStatusActionId}
+        isActionPending={isActionPending}
         onTaskStatusChange={onTaskStatusChange}
         activeSession={activeSession}
       />
