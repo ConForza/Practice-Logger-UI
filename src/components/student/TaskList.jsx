@@ -46,7 +46,7 @@ function TaskCard({
         <button
           type="button"
           onClick={() => onPracticeTask(task.id)}
-          disabled={isCompleted || isActionPending}
+          disabled={isCompleted || isCurrentTask || isActionPending}
         >
           {isTaskActionInProgress
             ? "Selecting..."

@@ -34,40 +34,44 @@ export default function SessionList({ sessions }) {
 
   return (
     <ul className="session-list">
-      {sessions.map((session) => (
-        <li className="session-card" key={session.id}>
-          <div className="session-card-header">
-            <h3>Practice session</h3>
-            <span>{session.duration} minutes</span>
-          </div>
+      {sessions.map((session) => {
+        const sessionTasks = getSessionTasks(session);
 
-          <p className="session-meta">
-            Started: {formatSessionDate(session.start_time)}
-          </p>
-
-          <div className="session-tasks">
-            <h4>Practised</h4>
-            {getSessionTasks(session).length > 0 ? (
-              <ul>
-                {getSessionTasks(session).map((task) => (
-                  <li key={task.id}>{task.title}</li>
-                ))}
-              </ul>
-            ) : (
-              <p className="session-meta">No task selected</p>
-            )}
-          </div>
-
-          {session.notes ? (
-            <div className="session-notes">
-              <h4>Notes</h4>
-              <p>{session.notes}</p>
+        return (
+          <li className="session-card" key={session.id}>
+            <div className="session-card-header">
+              <h3>Practice session</h3>
+              <span>{session.duration} minutes</span>
             </div>
-          ) : (
-            <p className="session-meta">No notes added.</p>
-          )}
-        </li>
-      ))}
+
+            <p className="session-meta">
+              Started: {formatSessionDate(session.start_time)}
+            </p>
+
+            <div className="session-tasks">
+              <h4>Practised</h4>
+              {sessionTasks.length > 0 ? (
+                <ul>
+                  {sessionTasks.map((task) => (
+                    <li key={task.id}>{task.title}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="session-meta">No task selected</p>
+              )}
+            </div>
+
+            {session.notes ? (
+              <div className="session-notes">
+                <h4>Notes</h4>
+                <p>{session.notes}</p>
+              </div>
+            ) : (
+              <p className="session-meta">No notes added.</p>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }

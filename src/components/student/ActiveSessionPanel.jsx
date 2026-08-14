@@ -67,6 +67,10 @@ export default function ActiveSessionPanel({
   const currentTask = (activeSession.tasks || []).find(
     (task) => task.id === activeSession.current_task_id,
   );
+  const selectableTaskIds = new Set(openTasks.map((task) => task.id));
+  const selectedTaskId = selectableTaskIds.has(activeSession.current_task_id)
+    ? activeSession.current_task_id
+    : "";
 
   return (
     <section className="active-session">
@@ -95,7 +99,7 @@ export default function ActiveSessionPanel({
         <div className="active-session-task-controls__row">
           <select
             id="current-task-select"
-            value={activeSession.current_task_id || ""}
+            value={selectedTaskId}
             onChange={(event) => {
               if (event.target.value) {
                 onSelectTask(Number(event.target.value));
