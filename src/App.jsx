@@ -5,8 +5,11 @@ import {
   getTasks,
   createTask,
   deleteTask,
-  startSession,
-  endSession,
+  startPracticeSession,
+  setCurrentTask,
+  clearCurrentTask,
+  endPracticeSession,
+  updateTaskStatus,
   getSessions,
   getActiveSession,
   getCurrentUser,
@@ -32,11 +35,13 @@ function App() {
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const [activeSession, setActiveSession] = useState(null);
-  const [startingTaskId, setStartingTaskId] = useState(null);
+  const [isStartingSession, setIsStartingSession] = useState(false);
+  const [taskActionId, setTaskActionId] = useState(null);
+  const [isClearingCurrentTask, setIsClearingCurrentTask] = useState(false);
+  const [taskStatusActionId, setTaskStatusActionId] = useState(null);
   const [sessionNotes, setSessionNotes] = useState("");
   const [isEndingSession, setIsEndingSession] = useState(false);
   const [sessions, setSessions] = useState([]);
-  const [isLoadingSessions, setIsLoadingSessions] = useState(false);
   const [activeView, setActiveView] = useState("dashboard");
 
   const [loading, setLoading] = useState(false);
@@ -139,17 +144,84 @@ function App() {
     }
   }
 
-  async function handleStartSession(taskId) {
-    setStartingTaskId(taskId);
+  async function handleStartSession(taskId = null) {
+    setIsStartingSession(true);
     setError("");
 
     try {
-      await startSession(token, taskId);
-      await fetchDashboardData(token);
+      const session = await startPracticeSession(token, taskId);
+      setActiveSession(session);
     } catch (err) {
       setError(err.message);
     } finally {
-      setStartingTaskId(null);
+      setIsStartingSession(false);
+    }
+  }
+
+  async function handlePracticeTask(taskId) {
+    if (!activeSession) {
+      await handleStartSession(taskId);
+      return;
+    }
+
+    setTaskActionId(taskId);
+    setError("");
+
+    try {
+      const session = await setCurrentTask(token, activeSession.id, taskId);
+      setActiveSession(session);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setTaskActionId(null);
+    }
+  }
+
+  async function handleClearCurrentTask() {
+    if (!activeSession) return;
+
+    setIsClearingCurrentTask(true);
+    setError("");
+
+    try {
+      const session = await clearCurrentTask(token, activeSession.id);
+      setActiveSession(session);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsClearingCurrentTask(false);
+    }
+  }
+
+  async function handleTaskStatusChange(taskId, status) {
+    setTaskStatusActionId(taskId);
+    setError("");
+
+    try {
+      const updatedTask = await updateTaskStatus(token, taskId, status);
+      setTasks((prev) =>
+        prev.map((task) => (task.id === taskId ? updatedTask : task)),
+      );
+
+      if (activeSession?.current_task_id === taskId && status === "completed") {
+        const refreshedSession = await getActiveSession(token);
+        setActiveSession(refreshedSession);
+      } else {
+        setActiveSession((currentSession) => {
+          if (!currentSession) return currentSession;
+
+          return {
+            ...currentSession,
+            tasks: (currentSession.tasks || []).map((task) =>
+              task.id === taskId ? { ...task, status } : task,
+            ),
+          };
+        });
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setTaskStatusActionId(null);
     }
   }
 
@@ -160,7 +232,7 @@ function App() {
     setError("");
 
     try {
-      await endSession(token, activeSession.task_id, sessionNotes);
+      await endPracticeSession(token, activeSession.id, sessionNotes);
 
       setSessionNotes("");
       await fetchDashboardData(token);
@@ -168,20 +240,6 @@ function App() {
       setError(err.message);
     } finally {
       setIsEndingSession(false);
-    }
-  }
-
-  async function fetchSessions() {
-    setIsLoadingSessions(true);
-    setError("");
-
-    try {
-      const sessionsData = await getSessions(token);
-      setSessions(sessionsData);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoadingSessions(false);
     }
   }
 
@@ -268,16 +326,23 @@ function App() {
             activeSession={activeSession}
             sessionNotes={sessionNotes}
             isEndingSession={isEndingSession}
+            isStartingSession={isStartingSession}
+            isTaskActionPending={Boolean(taskActionId)}
+            isClearingCurrentTask={isClearingCurrentTask}
             tasks={tasks}
             sessions={sessions}
             deletingTaskId={deletingTaskId}
-            startingTaskId={startingTaskId}
+            taskActionId={taskActionId}
+            taskStatusActionId={taskStatusActionId}
             isCreatingTask={isCreatingTask}
             onCreateTask={handleCreateTask}
             onEndSession={handleEndSession}
             onSessionNotesChange={(e) => setSessionNotes(e.target.value)}
             onDeleteTask={handleDeleteTask}
             onStartSession={handleStartSession}
+            onPracticeTask={handlePracticeTask}
+            onClearCurrentTask={handleClearCurrentTask}
+            onTaskStatusChange={handleTaskStatusChange}
             token={token}
           />
         );

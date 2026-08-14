@@ -5,11 +5,13 @@ export default function TaskSection({
   tasks,
   activeSession,
   deletingTaskId,
-  startingTaskId,
+  taskActionId,
+  taskStatusActionId,
   isCreatingTask,
   onCreateTask,
   onDeleteTask,
-  onStartSession,
+  onPracticeTask,
+  onTaskStatusChange,
 }) {
   return (
     <section className="task-section">
@@ -19,8 +21,10 @@ export default function TaskSection({
         tasks={tasks}
         onDeleteTask={onDeleteTask}
         deletingTaskId={deletingTaskId}
-        onStartSession={onStartSession}
-        startingTaskId={startingTaskId}
+        onPracticeTask={onPracticeTask}
+        taskActionId={taskActionId}
+        taskStatusActionId={taskStatusActionId}
+        onTaskStatusChange={onTaskStatusChange}
         activeSession={activeSession}
       />
     </section>

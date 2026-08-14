@@ -8,6 +8,17 @@ export default function StudentSessionList({ sessions }) {
     );
   }
 
+  function getSessionTasks(session) {
+    if (session.tasks?.length) return session.tasks;
+    if (session.title) {
+      return [{ id: session.task_id || "legacy", title: session.title }];
+    }
+    if (session.task_id) {
+      return [{ id: session.task_id, title: `Task ${session.task_id}` }];
+    }
+    return [];
+  }
+
   return (
     <ul className="teacher-session-list">
       {sessions.map((session) => (
@@ -21,9 +32,18 @@ export default function StudentSessionList({ sessions }) {
             Started: {new Date(session.start_time).toLocaleString()}
           </p>
 
-          <p className="teacher-session-card__meta">
-            Task ID: {session.task_id}
-          </p>
+          <div className="teacher-session-card__tasks">
+            <h5>Practised</h5>
+            {getSessionTasks(session).length > 0 ? (
+              <ul>
+                {getSessionTasks(session).map((task) => (
+                  <li key={task.id}>{task.title}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="teacher-session-card__meta">No task selected</p>
+            )}
+          </div>
 
           {session.notes ? (
             <div className="teacher-session-card__notes">

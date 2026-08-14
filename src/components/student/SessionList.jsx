@@ -6,6 +6,22 @@ function formatSessionDate(startTime) {
   return new Date(startTime).toLocaleString();
 }
 
+function getSessionTasks(session) {
+  if (session.tasks?.length) {
+    return session.tasks;
+  }
+
+  if (session.title) {
+    return [{ id: session.task_id || "legacy", title: session.title }];
+  }
+
+  if (session.task_id) {
+    return [{ id: session.task_id, title: `Task ${session.task_id}` }];
+  }
+
+  return [];
+}
+
 export default function SessionList({ sessions }) {
   if (!sessions || sessions.length === 0) {
     return (
@@ -21,15 +37,26 @@ export default function SessionList({ sessions }) {
       {sessions.map((session) => (
         <li className="session-card" key={session.id}>
           <div className="session-card-header">
-            <h3>{session.title || `Task ${session.task_id}`}</h3>
-            <span>{session.duration} mins</span>
+            <h3>Practice session</h3>
+            <span>{session.duration} minutes</span>
           </div>
 
           <p className="session-meta">
             Started: {formatSessionDate(session.start_time)}
           </p>
 
-          <p className="session-meta">Task ID: {session.task_id}</p>
+          <div className="session-tasks">
+            <h4>Practised</h4>
+            {getSessionTasks(session).length > 0 ? (
+              <ul>
+                {getSessionTasks(session).map((task) => (
+                  <li key={task.id}>{task.title}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="session-meta">No task selected</p>
+            )}
+          </div>
 
           {session.notes ? (
             <div className="session-notes">
